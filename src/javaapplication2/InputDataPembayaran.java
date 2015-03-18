@@ -5,20 +5,63 @@
  */
 package javaapplication2;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author toshiba
  */
 public class InputDataPembayaran extends javax.swing.JInternalFrame {
     private final NewJFrame frame;
+    public Integer t_cust_account_id;
+    public String npwd;
+    public String company_name;
+    public Integer p_vat_type_id;
+    public String vat_code;
+    public Integer p_vat_type_dtl_id;
+    public String vat_code_dtl;
+    
+    public DBConnection dbConn;
     /**
      * Creates new form InputDataPembayaran
      */
-    public InputDataPembayaran(NewJFrame frame) {
+    public InputDataPembayaran(NewJFrame frame, String user_name) {
         this.frame = frame;
         initComponents();
+        dbConn = new DBConnection();
+        this.initUserVars(user_name);
     }
 
+    private void initUserVars(String user_name) {
+        
+        try {
+            Connection con = dbConn.openConnection();
+            Statement st = con.createStatement();
+            String query = "select ty_lov_npwd as t_cust_account_id, npwd, company_name,\n" +
+                            "p_vat_type_id, vat_code, p_vat_type_dtl_id, vat_code_dtl\n" +
+                            "from f_get_npwd_by_username('"+user_name+"') AS tbl (ty_lov_npwd)";
+            ResultSet rs = st.executeQuery(query);
+            while(rs.next()) {
+                this.t_cust_account_id = rs.getInt("t_cust_account_id");
+                this.npwd = rs.getString("npwd");
+                this.company_name = rs.getString("company_name");
+                this.p_vat_type_id = rs.getInt("p_vat_type_id");
+                this.vat_code = rs.getString("vat_code");
+                this.p_vat_type_dtl_id = rs.getInt("p_vat_type_dtl_id");
+                this.vat_code = rs.getString("vat_code");
+            }
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(InputDataPembayaran.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

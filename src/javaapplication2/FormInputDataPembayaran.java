@@ -7,6 +7,7 @@ package javaapplication2;
 
 import java.awt.Toolkit;
 import java.util.Locale;
+import virtualkeyboard.gui.DialogVirtualKeyboardNumber;
 import virtualkeyboard.gui.DialogVirtualKeyboardReal;
 
 /**
@@ -282,8 +283,8 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
 
     private void txtNilaiOmsetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNilaiOmsetActionPerformed
         // TODO add your handling code here:
-        DialogVirtualKeyboardReal dlg;
-        dlg = new DialogVirtualKeyboardReal(this.frame, true, txtNilaiOmset);
+        DialogVirtualKeyboardNumber dlg;
+        dlg = new DialogVirtualKeyboardNumber(this.frame, true, txtNilaiOmset);
         dlg.setPoitToUp(false);
         dlg.setShiftBs(false);
         dlg.setLocaleL(Locale.ENGLISH);
@@ -292,8 +293,8 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
 
     private void txtNilaiOmsetMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtNilaiOmsetMouseClicked
         // TODO add your handling code here:
-        DialogVirtualKeyboardReal dlg;
-        dlg = new DialogVirtualKeyboardReal(this.frame, true, txtNilaiOmset);
+        DialogVirtualKeyboardNumber dlg;
+        dlg = new DialogVirtualKeyboardNumber(this.frame, true, txtNilaiOmset);
         dlg.setPoitToUp(false);
         dlg.setShiftBs(false);
         dlg.setLocaleL(Locale.ENGLISH);

@@ -8,10 +8,17 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Toolkit;
-import java.beans.PropertyVetoException;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import virtualkeyboard.gui.DialogVirtualKeyboardReal;
 
 /**
@@ -20,6 +27,7 @@ import virtualkeyboard.gui.DialogVirtualKeyboardReal;
  */
 public class LoginPage extends javax.swing.JPanel {
     private final NewJFrame frame;
+    public DBConnection dbConn;
     Image bgimage = null;
     /**
      * Creates new form LoginPage
@@ -37,6 +45,7 @@ public class LoginPage extends javax.swing.JPanel {
           } catch (InterruptedException e) {
             e.printStackTrace();
           }
+        dbConn = new DBConnection();
     }
 
     /**
@@ -160,14 +169,64 @@ public class LoginPage extends javax.swing.JPanel {
         
         // TODO add your handling code here:
         
-        boolean usernameValid = true;
+        boolean usernameValid = false;
+        String username = txtUname.getText().trim();
+        String password = txtPassword.getText().trim();
         
         //pengecekkan query login
+        if( username.isEmpty() || password.isEmpty() ) {
+            JOptionPane.showMessageDialog(null, "Username dan Password tidak boleh kosong");
+            return;
+        }
+        
+        
+        String user_name = "";
+        String is_employee = "";
+        String user_status = "";
+        String user_password = "";
+        try {
+            Connection con = dbConn.openConnection();
+            Statement st = con.createStatement();
+            String query = "SELECT p_app_user_id as user_id,app_user_name as user_name,user_pwd as user_password,email_address as user_email,full_name as user_realname,p_user_status_id as user_status, is_employee FROM p_app_user WHERE app_user_name = '" + username + "'";
+            ResultSet rs = st.executeQuery(query);
+            while(rs.next()) {
+                user_name = rs.getString("user_name");
+                is_employee = rs.getString("is_employee");
+                user_password = rs.getString("user_password");
+                user_status = rs.getString("user_status");
+            }
+            
+            if(user_name.equals("")) { //username tidak terdaftar
+                JOptionPane.showMessageDialog(null, "Username tidak terdaftar");
+                return;
+            }
+            
+            if(is_employee.equals("Y")) { //pegawai
+                JOptionPane.showMessageDialog(null, "Username tidak terdaftar");
+                return;
+            }
+            
+            if(!user_status.equals("1")) { //tidak aktif
+                JOptionPane.showMessageDialog(null, "Username tidak Aktif");
+                return;
+            }
+            
+            if(!this.md5Java(password.trim()).trim().equals(user_password.trim())) {
+                JOptionPane.showMessageDialog(null, "Password tidak sama");
+                return;
+            }
+            
+            usernameValid = true;
+            
+            
+        } catch (SQLException | NoSuchAlgorithmException ex) {
+            Logger.getLogger(LoginPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         if(usernameValid) { //jika valid
             frame.callEventTest(this);
             //this.setVisible(false);
-            InputDataPembayaran formInputDataPembayaran = new InputDataPembayaran(frame);
+            InputDataPembayaran formInputDataPembayaran = new InputDataPembayaran(frame, user_name);
             formInputDataPembayaran.pack();
             
             frame.getContentPane().add(formInputDataPembayaran);
@@ -239,4 +298,25 @@ public class LoginPage extends javax.swing.JPanel {
         int imheight = bgimage.getHeight(null);
         g.drawImage(bgimage, 1, 1, null);
     }
+    
+    public String md5Java(String message) throws NoSuchAlgorithmException{
+        String digest = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] hash = md.digest(message.getBytes("UTF-8"));
+           
+            //converting byte array to Hexadecimal String
+           StringBuilder sb = new StringBuilder(2*hash.length);
+           for(byte b : hash){
+               sb.append(String.format("%02x", b&0xff));
+           }
+          
+           digest = sb.toString();
+          
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException ex) {
+            Logger.getLogger(LoginPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return digest;
+    }
+
 }
