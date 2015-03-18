@@ -78,6 +78,7 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
         btnHapus = new javax.swing.JButton();
         btnSubmitLaporanPajak = new javax.swing.JButton();
         cmbNpwpd = new javax.swing.JComboBox();
+        btnLogout = new javax.swing.JButton();
 
         tblPelaporan.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -115,6 +116,13 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
 
         btnSubmitLaporanPajak.setText("Kirim Laporan Pajak");
 
+        btnLogout.setText("Logout");
+        btnLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogoutActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -131,7 +139,8 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
                         .addComponent(btnSubmitLaporanPajak, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(cmbNpwpd, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 129, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
+                        .addComponent(btnLogout)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -143,10 +152,11 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnTambahPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(cmbNpwpd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(90, Short.MAX_VALUE))
+                .addContainerGap(94, Short.MAX_VALUE))
         );
 
         pack();
@@ -159,9 +169,22 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
         formInputDataPembayaran.setVisible(true);
     }//GEN-LAST:event_btnTambahPembayaranActionPerformed
 
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        // TODO add your handling code here:
+        //this.frame.callEventTest();
+        LoginPage thisPanel = new LoginPage(this.frame);
+        this.frame.setContentPane(thisPanel);
+        this.frame.invalidate();
+        this.frame.validate();
+               
+        this.dispose();
+        
+    }//GEN-LAST:event_btnLogoutActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnHapus;
+    private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnSubmitLaporanPajak;
     private javax.swing.JButton btnTambahPembayaran;
     private javax.swing.JComboBox cmbNpwpd;

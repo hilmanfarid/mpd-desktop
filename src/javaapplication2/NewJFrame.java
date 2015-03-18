@@ -181,7 +181,7 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 
-    public void callEventTest(JPanel thisPanel) {
+    public void callEventTest() {
        System.out.println("tes ah");
        getContentPane().removeAll();
        this.repaint();
