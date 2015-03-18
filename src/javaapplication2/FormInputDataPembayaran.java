@@ -6,18 +6,22 @@
 package javaapplication2;
 
 import java.awt.Toolkit;
+import java.util.Locale;
+import virtualkeyboard.gui.DialogVirtualKeyboardReal;
 
 /**
  *
  * @author toshiba
  */
 public class FormInputDataPembayaran extends javax.swing.JDialog {
-
+    private final NewJFrame frame;
     /**
      * Creates new form FormInputDataPembayaran
      */
-    public FormInputDataPembayaran(java.awt.Frame parent, boolean modal) {
+    public FormInputDataPembayaran(NewJFrame parent, boolean modal) {
+        
         super(parent, modal);
+        this.frame = parent;
         initComponents();
         setLocation((Toolkit.getDefaultToolkit().getScreenSize().width - getWidth() ) / 2 ,(Toolkit.getDefaultToolkit().getScreenSize().height - getHeight()) / 2);
     }
@@ -101,6 +105,18 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
         jLabel13.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel13.setText("Nomor Pembayaran");
 
+        txtNilaiOmset.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtNilaiOmsetMouseClicked(evt);
+            }
+        });
+        txtNilaiOmset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNilaiOmsetActionPerformed(evt);
+            }
+        });
+
+        txtNilaiHarusDibayar.setEditable(false);
         txtNilaiHarusDibayar.setBackground(new java.awt.Color(153, 255, 153));
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -112,13 +128,16 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
         jLabel16.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel16.setText("Rp.");
 
+        txtNilaiDenda.setEditable(false);
         txtNilaiDenda.setBackground(new java.awt.Color(153, 255, 153));
 
         jLabel17.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel17.setText("Rp.");
 
+        txtTotalHarusBayar.setEditable(false);
         txtTotalHarusBayar.setBackground(new java.awt.Color(153, 255, 153));
 
+        txtNomorPembayaran.setEditable(false);
         txtNomorPembayaran.setBackground(new java.awt.Color(153, 255, 153));
 
         btnPrintNoPembayaran.setText("Print No Pembayaran");
@@ -187,7 +206,7 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
                             .addGap(26, 26, 26)
                             .addComponent(btnTutup, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(btnPrintNoPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
@@ -246,10 +265,10 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
                     .addComponent(txtNomorPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnPrintNoPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnTutup, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
-                    .addComponent(btnSimpan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnTutup, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSimpan, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -260,6 +279,26 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_btnTutupActionPerformed
+
+    private void txtNilaiOmsetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNilaiOmsetActionPerformed
+        // TODO add your handling code here:
+        DialogVirtualKeyboardReal dlg;
+        dlg = new DialogVirtualKeyboardReal(this.frame, true, txtNilaiOmset);
+        dlg.setPoitToUp(true);
+        dlg.setShiftBs(false);
+        dlg.setLocaleL(Locale.ENGLISH);
+        
+    }//GEN-LAST:event_txtNilaiOmsetActionPerformed
+
+    private void txtNilaiOmsetMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtNilaiOmsetMouseClicked
+        // TODO add your handling code here:
+        DialogVirtualKeyboardReal dlg;
+        dlg = new DialogVirtualKeyboardReal(this.frame, true, txtNilaiOmset);
+        dlg.setPoitToUp(true);
+        dlg.setShiftBs(false);
+        dlg.setLocaleL(Locale.ENGLISH);
+        
+    }//GEN-LAST:event_txtNilaiOmsetMouseClicked
 
     /**
      * @param args the command line arguments
