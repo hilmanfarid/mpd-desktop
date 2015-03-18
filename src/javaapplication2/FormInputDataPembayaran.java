@@ -142,7 +142,7 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
 
         btnPrintNoPembayaran.setText("Print No Pembayaran");
 
-        btnSimpan.setText("Kirim");
+        btnSimpan.setText("Simpan");
 
         btnTutup.setText("Tutup");
         btnTutup.addActionListener(new java.awt.event.ActionListener() {
