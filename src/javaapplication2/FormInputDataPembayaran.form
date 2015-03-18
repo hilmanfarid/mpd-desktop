@@ -377,7 +377,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="btnSimpan">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Kirim"/>
+        <Property name="text" type="java.lang.String" value="Simpan"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btnTutup">
