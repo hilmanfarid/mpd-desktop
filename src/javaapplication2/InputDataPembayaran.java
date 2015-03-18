@@ -171,7 +171,7 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
         // TODO add your handling code here:
-        //this.frame.callEventTest();
+        
         LoginPage thisPanel = new LoginPage(this.frame);
         this.frame.setContentPane(thisPanel);
         this.frame.invalidate();

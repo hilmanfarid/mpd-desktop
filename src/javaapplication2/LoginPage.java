@@ -81,15 +81,16 @@ public class LoginPage extends javax.swing.JPanel {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(21, 133, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(14, 148, 0, 0);
         jPanel1.add(jLabel2, gridBagConstraints);
 
         jLabel1.setText("Username");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(122, 131, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(123, 148, 0, 0);
         jPanel1.add(jLabel1, gridBagConstraints);
 
         txtUname.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -113,13 +114,13 @@ public class LoginPage extends javax.swing.JPanel {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.ipadx = 151;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(119, 10, 0, 99);
+        gridBagConstraints.insets = new java.awt.Insets(120, 18, 0, 123);
         jPanel1.add(txtUname, gridBagConstraints);
 
         jButton1.setText("Login");
@@ -129,10 +130,12 @@ public class LoginPage extends javax.swing.JPanel {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 4;
+        gridBagConstraints.ipadx = 13;
+        gridBagConstraints.ipady = 8;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(11, 10, 65, 0);
+        gridBagConstraints.insets = new java.awt.Insets(11, 16, 76, 0);
         jPanel1.add(jButton1, gridBagConstraints);
 
         txtPass.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -146,13 +149,13 @@ public class LoginPage extends javax.swing.JPanel {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.ipadx = 151;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(18, 10, 0, 99);
+        gridBagConstraints.insets = new java.awt.Insets(11, 16, 0, 0);
         jPanel1.add(txtPass, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
