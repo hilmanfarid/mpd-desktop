@@ -8,7 +8,10 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Toolkit;
+import java.beans.PropertyVetoException;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import virtualkeyboard.gui.DialogVirtualKeyboardReal;
 
 /**
@@ -49,8 +52,8 @@ public class LoginPage extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        txtUname = new javax.swing.JTextField();
+        txtPassword = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
 
         addMouseListener(new java.awt.event.MouseAdapter() {
@@ -69,82 +72,78 @@ public class LoginPage extends javax.swing.JPanel {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(14, 83, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(21, 108, 0, 0);
         jPanel1.add(jLabel2, gridBagConstraints);
 
         jLabel1.setText("Username");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(36, 83, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(97, 106, 0, 0);
         jPanel1.add(jLabel1, gridBagConstraints);
 
-        jTextField1.setText("jTextField1");
-        jTextField1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTextField1MouseClicked(evt);
-            }
-        });
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
-        jTextField1.addFocusListener(new java.awt.event.FocusAdapter() {
+        txtUname.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                jTextField1FocusGained(evt);
+                txtUnameFocusGained(evt);
             }
         });
-        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTextField1KeyTyped(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.ipadx = 72;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(33, 18, 0, 73);
-        jPanel1.add(jTextField1, gridBagConstraints);
-
-        jTextField2.setText("jTextField2");
-        jTextField2.addMouseListener(new java.awt.event.MouseAdapter() {
+        txtUname.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTextField2MouseClicked(evt);
+                txtUnameMouseClicked(evt);
             }
         });
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        txtUname.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                txtUnameActionPerformed(evt);
+            }
+        });
+        txtUname.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtUnameKeyTyped(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.gridheight = 2;
-        gridBagConstraints.ipadx = 72;
+        gridBagConstraints.ipadx = 151;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(11, 18, 0, 73);
-        jPanel1.add(jTextField2, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(94, 10, 0, 0);
+        jPanel1.add(txtUname, gridBagConstraints);
 
-        jButton1.setText("Submit");
+        txtPassword.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtPasswordMouseClicked(evt);
+            }
+        });
+        txtPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPasswordActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.ipadx = 153;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(18, 10, 0, 111);
+        jPanel1.add(txtPassword, gridBagConstraints);
+
+        jButton1.setText("Login");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(18, 120, 21, 0);
+        gridBagConstraints.insets = new java.awt.Insets(11, 10, 76, 0);
         jPanel1.add(jButton1, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -158,48 +157,69 @@ public class LoginPage extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-         frame.callEventTest(this);// TODO add your handling code here:
+        
+        // TODO add your handling code here:
+        
+        boolean usernameValid = true;
+        
+        //pengecekkan query login
+        
+        if(usernameValid) { //jika valid
+            frame.callEventTest(this);
+            //this.setVisible(false);
+            InputDataPembayaran formInputDataPembayaran = new InputDataPembayaran(frame);
+            formInputDataPembayaran.pack();
+            
+            frame.getContentPane().add(formInputDataPembayaran);
+            frame.setContentPane(formInputDataPembayaran);
+            formInputDataPembayaran.setVisible(true);
+            
+        }else { //jika tidak tampilkan pesan
+            
+        }
+        
+         
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txtUnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUnameActionPerformed
         DialogVirtualKeyboardReal dlg;
-        dlg = new DialogVirtualKeyboardReal(frame, false, jTextField1);
+        dlg = new DialogVirtualKeyboardReal(frame, false, txtUname);
         dlg.setPoitToUp(false);
         dlg.setShiftBs(false);
         dlg.setLocaleL(Locale.ENGLISH);        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txtUnameActionPerformed
 
-    private void jTextField1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusGained
+    private void txtUnameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUnameFocusGained
 
-    }//GEN-LAST:event_jTextField1FocusGained
+    }//GEN-LAST:event_txtUnameFocusGained
 
-    private void jTextField1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField1MouseClicked
+    private void txtUnameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtUnameMouseClicked
         DialogVirtualKeyboardReal dlg;
-        dlg = new DialogVirtualKeyboardReal(frame, false, jTextField1);
+        dlg = new DialogVirtualKeyboardReal(frame, false, txtUname);
         dlg.setPoitToUp(false);
         dlg.setShiftBs(false);
         dlg.setLocaleL(Locale.ENGLISH);
-    }//GEN-LAST:event_jTextField1MouseClicked
+    }//GEN-LAST:event_txtUnameMouseClicked
 
-    private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
+    private void txtUnameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUnameKeyTyped
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1KeyTyped
+    }//GEN-LAST:event_txtUnameKeyTyped
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
         DialogVirtualKeyboardReal dlg;
-        dlg = new DialogVirtualKeyboardReal(frame, false, jTextField2);
+        dlg = new DialogVirtualKeyboardReal(frame, false, txtPassword);
         dlg.setPoitToUp(false);
         dlg.setShiftBs(false);
         dlg.setLocaleL(Locale.ENGLISH);
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_txtPasswordActionPerformed
 
-    private void jTextField2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField2MouseClicked
+    private void txtPasswordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtPasswordMouseClicked
         DialogVirtualKeyboardReal dlg;
-        dlg = new DialogVirtualKeyboardReal(frame, false, jTextField2);
+        dlg = new DialogVirtualKeyboardReal(frame, false, txtPassword);
         dlg.setPoitToUp(false);
         dlg.setShiftBs(false);
         dlg.setLocaleL(Locale.ENGLISH);
-    }//GEN-LAST:event_jTextField2MouseClicked
+    }//GEN-LAST:event_txtPasswordMouseClicked
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
 
@@ -210,8 +230,8 @@ public class LoginPage extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField txtPassword;
+    private javax.swing.JTextField txtUname;
     // End of variables declaration//GEN-END:variables
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

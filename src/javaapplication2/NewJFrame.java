@@ -166,7 +166,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 f.setVisible(true);    // FIRST visible = true
                 f.setResizable(false); // THEN  resizable = false
                 f.setDefaultCloseOperation(f.EXIT_ON_CLOSE);
-                f.setUndecorated(true);
+
             }
         });
     }

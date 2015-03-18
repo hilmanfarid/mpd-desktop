@@ -10,11 +10,12 @@ package javaapplication2;
  * @author toshiba
  */
 public class InputDataPembayaran extends javax.swing.JInternalFrame {
-
+    private final NewJFrame frame;
     /**
      * Creates new form InputDataPembayaran
      */
-    public InputDataPembayaran() {
+    public InputDataPembayaran(NewJFrame frame) {
+        this.frame = frame;
         initComponents();
     }
 
@@ -27,21 +28,99 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblPelaporan = new javax.swing.JTable();
+        btnTambahPembayaran = new javax.swing.JButton();
+        btnHapus = new javax.swing.JButton();
+        btnSubmitLaporanPajak = new javax.swing.JButton();
+        cmbNpwpd = new javax.swing.JComboBox();
+
+        tblPelaporan.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "NPWPD", "Status Pembayaran", "Periode", "Total Transaksi", "Pajak", "Denda", "Total yang harus dibayar", "No Pembayaran", "Jatuh Tempo Pelaporan", "Batas Waktu Pembayaran"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, true, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tblPelaporan);
+
+        btnTambahPembayaran.setText("Tambah Data Pembayaran");
+        btnTambahPembayaran.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTambahPembayaranActionPerformed(evt);
+            }
+        });
+
+        btnHapus.setText("Hapus");
+
+        btnSubmitLaporanPajak.setText("Kirim Laporan Pajak");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnTambahPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnSubmitLaporanPajak, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(cmbNpwpd, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 129, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(11, 11, 11)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnTambahPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSubmitLaporanPajak, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbNpwpd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(90, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnTambahPembayaranActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahPembayaranActionPerformed
+        // TODO add your handling code here:
+        //Tampilkan Form Input Pembayaran
+        FormInputDataPembayaran formInputDataPembayaran = new FormInputDataPembayaran(this.frame, true);
+        formInputDataPembayaran.setVisible(true);
+    }//GEN-LAST:event_btnTambahPembayaranActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnHapus;
+    private javax.swing.JButton btnSubmitLaporanPajak;
+    private javax.swing.JButton btnTambahPembayaran;
+    private javax.swing.JComboBox cmbNpwpd;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblPelaporan;
     // End of variables declaration//GEN-END:variables
 }
