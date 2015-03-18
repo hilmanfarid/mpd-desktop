@@ -284,7 +284,7 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
         // TODO add your handling code here:
         DialogVirtualKeyboardReal dlg;
         dlg = new DialogVirtualKeyboardReal(this.frame, true, txtNilaiOmset);
-        dlg.setPoitToUp(true);
+        dlg.setPoitToUp(false);
         dlg.setShiftBs(false);
         dlg.setLocaleL(Locale.ENGLISH);
         
@@ -294,7 +294,7 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
         // TODO add your handling code here:
         DialogVirtualKeyboardReal dlg;
         dlg = new DialogVirtualKeyboardReal(this.frame, true, txtNilaiOmset);
-        dlg.setPoitToUp(true);
+        dlg.setPoitToUp(false);
         dlg.setShiftBs(false);
         dlg.setLocaleL(Locale.ENGLISH);
         
