@@ -106,6 +106,7 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
         jLabel13.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel13.setText("Nomor Pembayaran");
 
+        txtNilaiOmset.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         txtNilaiOmset.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 txtNilaiOmsetMouseClicked(evt);
@@ -119,6 +120,7 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
 
         txtNilaiHarusDibayar.setEditable(false);
         txtNilaiHarusDibayar.setBackground(new java.awt.Color(153, 255, 153));
+        txtNilaiHarusDibayar.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel14.setText("Rp.");
@@ -131,15 +133,18 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
 
         txtNilaiDenda.setEditable(false);
         txtNilaiDenda.setBackground(new java.awt.Color(153, 255, 153));
+        txtNilaiDenda.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         jLabel17.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel17.setText("Rp.");
 
         txtTotalHarusBayar.setEditable(false);
         txtTotalHarusBayar.setBackground(new java.awt.Color(153, 255, 153));
+        txtTotalHarusBayar.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         txtNomorPembayaran.setEditable(false);
         txtNomorPembayaran.setBackground(new java.awt.Color(153, 255, 153));
+        txtNomorPembayaran.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         btnPrintNoPembayaran.setText("Print No Pembayaran");
 
@@ -269,7 +274,7 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnTutup, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnSimpan, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE))
+                    .addComponent(btnSimpan, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
