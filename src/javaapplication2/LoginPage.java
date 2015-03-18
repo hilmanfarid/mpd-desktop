@@ -216,6 +216,8 @@ public class LoginPage extends javax.swing.JPanel {
                 return;
             }
             
+            con.close();
+            st.close();
             usernameValid = true;
             
             

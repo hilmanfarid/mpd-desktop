@@ -107,6 +107,7 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
         jLabel13.setText("Nomor Pembayaran");
 
         txtNilaiOmset.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtNilaiOmset.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtNilaiOmset.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 txtNilaiOmsetMouseClicked(evt);
@@ -121,6 +122,7 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
         txtNilaiHarusDibayar.setEditable(false);
         txtNilaiHarusDibayar.setBackground(new java.awt.Color(153, 255, 153));
         txtNilaiHarusDibayar.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtNilaiHarusDibayar.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel14.setText("Rp.");
@@ -134,6 +136,7 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
         txtNilaiDenda.setEditable(false);
         txtNilaiDenda.setBackground(new java.awt.Color(153, 255, 153));
         txtNilaiDenda.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtNilaiDenda.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
         jLabel17.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel17.setText("Rp.");
@@ -141,6 +144,7 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
         txtTotalHarusBayar.setEditable(false);
         txtTotalHarusBayar.setBackground(new java.awt.Color(153, 255, 153));
         txtTotalHarusBayar.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtTotalHarusBayar.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
         txtNomorPembayaran.setEditable(false);
         txtNomorPembayaran.setBackground(new java.awt.Color(153, 255, 153));
