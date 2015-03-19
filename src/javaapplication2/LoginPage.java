@@ -219,7 +219,7 @@ public class LoginPage extends javax.swing.JPanel {
             }
             
             if(!this.md5Java(password.trim()).trim().equals(user_password.trim())) {
-                JOptionPane.showMessageDialog(null, "Password tidak sama");
+                JOptionPane.showMessageDialog(null, "Password Anda salah");
                 return;
             }
             
