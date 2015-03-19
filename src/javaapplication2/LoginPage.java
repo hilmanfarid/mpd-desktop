@@ -76,23 +76,26 @@ public class LoginPage extends javax.swing.JPanel {
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Password");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(14, 148, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(17, 155, 0, 0);
         jPanel1.add(jLabel2, gridBagConstraints);
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Username");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(123, 148, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(141, 155, 0, 0);
         jPanel1.add(jLabel1, gridBagConstraints);
 
+        txtUname.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtUname.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtUnameFocusGained(evt);
@@ -116,11 +119,11 @@ public class LoginPage extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.ipadx = 151;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(120, 18, 0, 123);
+        gridBagConstraints.insets = new java.awt.Insets(138, 18, 0, 109);
         jPanel1.add(txtUname, gridBagConstraints);
 
         jButton1.setText("Login");
@@ -135,9 +138,10 @@ public class LoginPage extends javax.swing.JPanel {
         gridBagConstraints.ipadx = 13;
         gridBagConstraints.ipady = 8;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(11, 16, 76, 0);
+        gridBagConstraints.insets = new java.awt.Insets(8, 16, 62, 0);
         jPanel1.add(jButton1, gridBagConstraints);
 
+        txtPass.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtPass.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 txtPassMouseClicked(evt);
@@ -155,7 +159,7 @@ public class LoginPage extends javax.swing.JPanel {
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.ipadx = 151;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(11, 16, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(14, 18, 0, 109);
         jPanel1.add(txtPass, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();

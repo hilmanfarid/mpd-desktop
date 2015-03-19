@@ -114,8 +114,18 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
         });
 
         btnHapus.setText("Hapus");
+        btnHapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHapusActionPerformed(evt);
+            }
+        });
 
         btnSubmitLaporanPajak.setText("Kirim Laporan Pajak");
+        btnSubmitLaporanPajak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSubmitLaporanPajakActionPerformed(evt);
+            }
+        });
 
         btnLogout.setText("Logout");
         btnLogout.addActionListener(new java.awt.event.ActionListener() {
@@ -191,6 +201,34 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
         
         
     }//GEN-LAST:event_btnLogoutActionPerformed
+
+    private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
+        // TODO add your handling code here:
+        int dialogButton = JOptionPane.YES_NO_OPTION;
+        int dialogResult = JOptionPane.showConfirmDialog(this,"Apakah Anda Yakin Ingin Menghapus data tersebut?","Info",dialogButton);
+        
+        if(dialogResult == 0) { // if yes
+            //do hapus
+            
+            
+        }else {
+            //do nothing
+        }
+    }//GEN-LAST:event_btnHapusActionPerformed
+
+    private void btnSubmitLaporanPajakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitLaporanPajakActionPerformed
+        // TODO add your handling code here:
+        int dialogButton = JOptionPane.YES_NO_OPTION;
+        int dialogResult = JOptionPane.showConfirmDialog(this,"Apakah Anda Yakin Ingin Mengirim Laporan Pajak Tersebut?","Info",dialogButton);
+        
+        if(dialogResult == 0) { // if yes
+            //do hapus
+            
+            
+        }else {
+            //do nothing
+        }
+    }//GEN-LAST:event_btnSubmitLaporanPajakActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
