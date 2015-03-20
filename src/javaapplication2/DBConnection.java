@@ -19,7 +19,7 @@ public class DBConnection {
         Connection con = null;
         try  {
             Class.forName("org.postgresql.Driver");
-            con = DriverManager.getConnection("jdbc:postgresql://localhost:5444/sikp_db6","sikp","sikp");
+            con = DriverManager.getConnection("jdbc:postgresql://202.154.24.3:5444/sikp_backup","sikp","sikp");
             System.out.println("Berhasil Koneksi");
             return con;
         }catch(ClassNotFoundException | SQLException e) {
