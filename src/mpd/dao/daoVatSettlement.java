@@ -14,8 +14,9 @@ import mpd.model.VatSettlement;
 public class daoVatSettlement{
 
     Connection connection;
+    public int t_cust_account_id_search;
     public int size_per_page=15;
-    public String order_and_limit=" order by settlement.start_period,settlement.t_vat_setllement_id DESC LIMIT ? OFFSET ? ";
+    public String order_and_limit=" order by settlement.start_period DESC,settlement.t_vat_setllement_id DESC LIMIT ? OFFSET ? ";
     final String insert = "INSERT INTO VatSettlement (nomer, nama, alamat) VALUES (?, ?, ?);";
     final String update = "UPDATE VatSettlement set nomer=?, nama=?, alamat=? where id=? ;";
     final String delete = "DELETE FROM VatSettlement where id=? ;";
@@ -46,11 +47,11 @@ public class daoVatSettlement{
                     "		left join t_customer_order cust_order on cust_order.t_customer_order_id = settlement.t_customer_order_id\n" +
                     "		left join t_cust_account cust_acc on cust_acc.t_cust_account_id = settlement.t_cust_account_id\n"+
                     "where\n"+
-                    "settlement.t_cust_account_id = 2 \n" +
-                    "and settlement.p_settlement_type_id = 1\n" +
+                    "settlement.t_cust_account_id = ? \n" +
+                    "--and settlement.p_settlement_type_id = 1\n";/* +
                     "and cust_order.p_order_status_id = 1\n" +
                     "and settlement.payment_key is not null\n" +
-                    "and settlement.payment_key <> ''";
+                    "and settlement.payment_key <> ''";*/
                     
     final String carinama = "SELECT * FROM VatSettlement where nama like ?";
 
@@ -120,14 +121,14 @@ public class daoVatSettlement{
         }
     }
 
-    public List<VatSettlement> getALL(int start, int limit, String orderby, String ordertype ) {
+    public List<VatSettlement> getALL(int start, int limit, String orderby, String ordertype) {
         List<VatSettlement> lb = null;
         try {
             lb = new ArrayList<VatSettlement>();
             PreparedStatement st = connection.prepareStatement(select+order_and_limit);
-            st.setInt(1, limit);
-            st.setInt(2, ((start-1)*limit)+1);
-            System.out.println(select);
+            st.setInt(1, t_cust_account_id_search);
+            st.setInt(2, limit);
+            st.setInt(3, ((start-1)*limit)+1);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 VatSettlement b = new VatSettlement();
@@ -166,10 +167,11 @@ public class daoVatSettlement{
     }
     public int getCount(){
         try {
-            PreparedStatement st = connection.prepareStatement(select);
-            System.out.println(select);
+            PreparedStatement st = connection.prepareStatement("select count(*) from ("+select+")");
+            st.setInt(1, t_cust_account_id_search);
             ResultSet rs = st.executeQuery();
-            return 0;
+            rs.next();
+            return rs.getInt(1);
         } catch (SQLException ex) {
             Logger.getLogger(daoVatSettlement.class.getName()).log(Level.SEVERE, null, ex);
             return 0;

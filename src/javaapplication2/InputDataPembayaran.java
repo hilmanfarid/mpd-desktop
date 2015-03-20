@@ -9,9 +9,14 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import mpd.dao.daoVatSettlement;
+import mpd.lib.PaginationVatSettlement;
+import mpd.model.VatSettlement;
 
 /**
  *
@@ -26,7 +31,7 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
     public String vat_code;
     public Integer p_vat_type_dtl_id;
     public String vat_code_dtl;
-    
+    private PaginationVatSettlement sett_pagination;
     public DBConnection dbConn;
     /**
      * Creates new form InputDataPembayaran
@@ -36,6 +41,26 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
         initComponents();
         dbConn = new DBConnection();
         this.initUserVars(user_name);
+        DefaultTableModel dtm = (DefaultTableModel) this.tblPelaporan.getModel();
+        daoVatSettlement sett = new daoVatSettlement();
+        sett.t_cust_account_id_search = this.t_cust_account_id;
+        sett_pagination = new PaginationVatSettlement(sett);
+        sett.size_per_page=15;
+        List<VatSettlement> res = sett.getALL(1,15, "t_vat_setllement_id", "DESC");
+        int total_row= 15;
+        int i_row=1;
+        for (VatSettlement temp : res) {
+                Object[] row = temp.getRow();
+                System.out.println(row);
+                dtm.addRow(row);
+                i_row++;
+	}
+        while(i_row <= 15){
+            dtm.addRow(new Object[]{null, null, null, null, null, null, null, null, null, null});
+            i_row++;
+        }
+        //Object[] row = {"tes", null, null, null, null, null, null, null, null, null};
+        //dtm.addRow(row);
     }
 
     private void initUserVars(String user_name) {
@@ -80,10 +105,15 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
         btnSubmitLaporanPajak = new javax.swing.JButton();
         cmbNpwpd = new javax.swing.JComboBox();
         btnLogout = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        btn_first3 = new javax.swing.JButton();
+        btn_prev = new javax.swing.JButton();
+        btn_next = new javax.swing.JButton();
+        btn_last = new javax.swing.JButton();
 
         tblPelaporan.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "NPWPD", "Status Pembayaran", "Periode", "Total Transaksi", "Pajak", "Denda", "Total yang harus dibayar", "No Pembayaran", "Jatuh Tempo Pelaporan", "Batas Waktu Pembayaran"
@@ -104,6 +134,7 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblPelaporan.setMaximumSize(new java.awt.Dimension(2147483647, 267));
         jScrollPane1.setViewportView(tblPelaporan);
 
         btnTambahPembayaran.setText("Tambah Data Pembayaran");
@@ -134,6 +165,49 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
             }
         });
 
+        btn_first3.setText("|<");
+        btn_first3.setMaximumSize(new java.awt.Dimension(70, 40));
+        btn_first3.setMinimumSize(new java.awt.Dimension(70, 40));
+        btn_first3.setName("btn_first"); // NOI18N
+        btn_first3.setPreferredSize(new java.awt.Dimension(70, 40));
+        jPanel2.add(btn_first3);
+
+        btn_prev.setText("<");
+        btn_prev.setMaximumSize(new java.awt.Dimension(70, 40));
+        btn_prev.setMinimumSize(new java.awt.Dimension(70, 40));
+        btn_prev.setName("btn_prev"); // NOI18N
+        btn_prev.setPreferredSize(new java.awt.Dimension(70, 40));
+        btn_prev.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_prevActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btn_prev);
+
+        btn_next.setText(">");
+        btn_next.setMaximumSize(new java.awt.Dimension(70, 40));
+        btn_next.setMinimumSize(new java.awt.Dimension(70, 40));
+        btn_next.setName("btn_next"); // NOI18N
+        btn_next.setPreferredSize(new java.awt.Dimension(70, 40));
+        btn_next.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_nextActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btn_next);
+
+        btn_last.setText(">|");
+        btn_last.setMaximumSize(new java.awt.Dimension(70, 40));
+        btn_last.setMinimumSize(new java.awt.Dimension(70, 40));
+        btn_last.setName("btn_last"); // NOI18N
+        btn_last.setPreferredSize(new java.awt.Dimension(70, 40));
+        btn_last.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_lastActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btn_last);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -151,7 +225,8 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addComponent(cmbNpwpd, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
-                        .addComponent(btnLogout)))
+                        .addComponent(btnLogout))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -167,8 +242,10 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
                             .addComponent(cmbNpwpd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(94, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pack();
@@ -230,13 +307,75 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btnSubmitLaporanPajakActionPerformed
 
+    private void btn_lastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_lastActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_lastActionPerformed
+
+    private void btn_nextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nextActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel dtm = (DefaultTableModel) this.tblPelaporan.getModel();
+        List<VatSettlement> res = sett_pagination.nextPage();
+        if(res == null){
+           return;
+        }
+        int total_row= 15;
+        int i_row=1;
+        if (dtm.getRowCount() > 0) {
+            for (int i = dtm.getRowCount() - 1; i > -1; i--) {
+                dtm.removeRow(i);
+            }
+        }
+        for (VatSettlement temp : res) {
+                Object[] row = temp.getRow();
+                System.out.println(row);
+                dtm.addRow(row);
+                i_row++;
+	}
+        while(i_row <= 15){
+            dtm.addRow(new Object[]{null, null, null, null, null, null, null, null, null, null});
+            i_row++;
+        }
+    }//GEN-LAST:event_btn_nextActionPerformed
+
+    private void btn_prevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_prevActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel dtm = (DefaultTableModel) this.tblPelaporan.getModel();
+        List<VatSettlement> res = sett_pagination.prevPage();
+        if(res == null){
+           return;
+        }
+        int total_row= 15;
+        int i_row=1;
+        if (dtm.getRowCount() > 0) {
+            for (int i = dtm.getRowCount() - 1; i > -1; i--) {
+                dtm.removeRow(i);
+            }
+        }
+        for (VatSettlement temp : res) {
+                Object[] row = temp.getRow();
+                System.out.println(row);
+                dtm.addRow(row);
+                i_row++;
+	}
+        while(i_row <= 15){
+            dtm.addRow(new Object[]{null, null, null, null, null, null, null, null, null, null});
+            i_row++;
+        }
+    }//GEN-LAST:event_btn_prevActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnHapus;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnSubmitLaporanPajak;
     private javax.swing.JButton btnTambahPembayaran;
+    private javax.swing.JButton btn_first3;
+    private javax.swing.JButton btn_last;
+    private javax.swing.JButton btn_next;
+    private javax.swing.JButton btn_prev;
     private javax.swing.JComboBox cmbNpwpd;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblPelaporan;
     // End of variables declaration//GEN-END:variables
