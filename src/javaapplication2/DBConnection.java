@@ -14,7 +14,7 @@ import java.sql.SQLException;
  * @author toshiba
  */
 public class DBConnection {
-    public Connection openConnection() {
+    public static Connection openConnection() {
         
         Connection con = null;
         try  {
