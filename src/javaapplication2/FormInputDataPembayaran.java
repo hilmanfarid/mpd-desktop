@@ -6,9 +6,16 @@
 package javaapplication2;
 
 import java.awt.Toolkit;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import virtualkeyboard.gui.DialogVirtualKeyboardNumber;
-import virtualkeyboard.gui.DialogVirtualKeyboardReal;
+
 
 /**
  *
@@ -151,6 +158,11 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
         txtNomorPembayaran.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         btnPrintNoPembayaran.setText("Print No Pembayaran");
+        btnPrintNoPembayaran.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrintNoPembayaranActionPerformed(evt);
+            }
+        });
 
         btnSimpan.setText("Simpan");
 
@@ -310,6 +322,36 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
         
     }//GEN-LAST:event_txtNilaiOmsetMouseClicked
 
+    private void btnPrintNoPembayaranActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintNoPembayaranActionPerformed
+        // TODO add your handling code here:
+        URL website;
+        ReadableByteChannel rbc;
+        FileOutputStream fos;
+       
+        String noBayar = "1500000017";
+        
+        try {
+            String url = "http://202.154.24.4:81/mpd-wp/client/ws.php?type=json&module=bds&class=t_vat_settlement&method=printNoBayar&no_bayar="+noBayar;
+            website = new URL(url);
+            rbc = Channels.newChannel(website.openStream());
+            String fileLocation = "E:\\"+noBayar+".pdf";
+            
+            
+            fos = new FileOutputStream(fileLocation);
+            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+            
+            rbc.close();
+            fos.close();
+            
+            Runtime rt = Runtime.getRuntime();
+            Process pr = rt.exec("java -jar pdfbox-app-1.8.8.jar PDFReader "+fileLocation);
+            
+        } catch (IOException ex) {
+            Logger.getLogger(FormInputDataPembayaran.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_btnPrintNoPembayaranActionPerformed
+    
     /**
      * @param args the command line arguments
      */
