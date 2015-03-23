@@ -5,6 +5,8 @@
  */
 package mpd.model;
 
+import java.util.HashMap;
+
 /**
  *
  * @author toshiba
@@ -13,12 +15,24 @@ public class Item {
     
     private Integer id;
     private String description;
+    private HashMap additionVal;
     
     public Item(Integer id, String description) {
         this.id = id;
-        this.description = description;
+        this.description = description;    
+        this.additionVal = new HashMap<String,String>();
+        
     }
-
+    
+    public String getAdditionalVal(String key) {
+        String value = (String) additionVal.get(key);
+        return value;
+    }
+    
+    public void setAdditionalVal(String key, String value) {
+        additionVal.put(key, value);
+    }
+    
     public Integer getId() {
         return id;
     }
