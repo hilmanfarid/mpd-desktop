@@ -6,6 +6,8 @@
 package javaapplication2;
 
 import java.awt.Toolkit;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -18,6 +20,8 @@ import java.sql.Statement;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import mpd.model.Item;
 import mpd.model.Pembayaran;
 import virtualkeyboard.gui.DialogVirtualKeyboardNumber;
 
@@ -50,10 +54,71 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
         try {
             st = con.createStatement();
             
-            //add cmbNPWD
-            String query = "";
+            /*add cmbNPWD*/
+            cmbNPWPD.addItem(new Item(pembayaran.getT_cust_account_id(), pembayaran.getNpwd()));
+            
+            /*add cmbPeriodePajak (mengambil 3 tahun kebelakang)*/
+            String query = "select p_finance_period_id, code from p_finance_period\n" +
+                            "where substring(code from char_length(code) - 3)::Integer >= extract(year from sysdate) - 3\n" +
+                            "order by start_date desc";
+            
+            ResultSet rs = st.executeQuery(query);
+            cmbPeriodePajak.addItem(new Item(null,""));
+            while(rs.next()) {
+                cmbPeriodePajak.addItem(new Item(rs.getInt("p_finance_period_id"),rs.getString("code")));
+            }
+            
+            cmbPeriodePajak.addItemListener(new ItemListener() {
+                @Override
+                public void itemStateChanged(ItemEvent arg0) {
+                    //Do Something
+                    Item item = (Item)cmbPeriodePajak.getSelectedItem();
+                    String query = "select to_char(start_date,'dd-mm-yyyy') as start_date, to_char(end_date,'dd-mm-yyyy') as end_date from p_finance_period\n" +
+                                    "where p_finance_period_id = "+ item.getId();
+                    
+                    Connection conlocal = DBConnection.openConnection();
+                   
+                    try {
+                        Statement stlocal = conlocal.createStatement();
+                        ResultSet rslocal = stlocal.executeQuery(query);
+                        while(rslocal.next()) {
+                            dateMasaPajakFrom.setText( rslocal.getString("start_date"));
+                            dateMasaPajakUntil.setText( rslocal.getString("end_date"));
+                        }
+                        
+                        txtNilaiOmset.setText("0");
+                        txtNilaiDenda.setText("0");
+                        txtNilaiHarusDibayar.setText("0");
+                        txtTotalHarusBayar.setText("0");
+                        
+                        stlocal.close();
+                        rslocal.close();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(FormInputDataPembayaran.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                }
+            });
+            
+            /* cmbAyatPajak */
+            query = "select p_vat_type_dtl_id, vat_code from p_vat_type_dtl\n" +
+                    "where p_vat_type_dtl_id = " + pembayaran.getP_vat_type_dtl_id();
+            
+            rs = st.executeQuery(query);
+            while(rs.next()) {
+                cmbAyatPajak.addItem(new Item(rs.getInt("p_vat_type_dtl_id"),rs.getString("vat_code")));
+            }
             
             
+            /* cmbKelasPajak */
+            query = "select p_vat_type_dtl_cls_id, vat_code from p_vat_type_dtl_cls\n" +
+                    "where p_vat_type_dtl_id = " + pembayaran.getP_vat_type_dtl_id();
+            
+            rs = st.executeQuery(query);
+            cmbKelasPajak.addItem(new Item(null,""));
+            while(rs.next()) {
+                cmbKelasPajak.addItem(new Item(rs.getInt("p_vat_type_dtl_cls_id"),rs.getString("vat_code")));
+            }
             
             
         } catch (SQLException ex) {
@@ -154,7 +219,6 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
             }
         });
 
-        txtNilaiHarusDibayar.setEditable(false);
         txtNilaiHarusDibayar.setBackground(new java.awt.Color(153, 255, 153));
         txtNilaiHarusDibayar.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         txtNilaiHarusDibayar.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
@@ -168,7 +232,6 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
         jLabel16.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel16.setText("Rp.");
 
-        txtNilaiDenda.setEditable(false);
         txtNilaiDenda.setBackground(new java.awt.Color(153, 255, 153));
         txtNilaiDenda.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         txtNilaiDenda.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
@@ -176,7 +239,6 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
         jLabel17.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel17.setText("Rp.");
 
-        txtTotalHarusBayar.setEditable(false);
         txtTotalHarusBayar.setBackground(new java.awt.Color(153, 255, 153));
         txtTotalHarusBayar.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         txtTotalHarusBayar.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
@@ -193,6 +255,11 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
         });
 
         btnSimpan.setText("Simpan");
+        btnSimpan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSimpanActionPerformed(evt);
+            }
+        });
 
         btnTutup.setText("Tutup");
         btnTutup.addActionListener(new java.awt.event.ActionListener() {
@@ -356,31 +423,131 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
         ReadableByteChannel rbc;
         FileOutputStream fos;
        
-        String noBayar = "1500000017";
+        String noBayar = txtNomorPembayaran.getText();
+        if (noBayar.equals("")) {
+            JOptionPane.showMessageDialog(this.frame, "Nomor Pembayaran Belum Ada. Simpan Data Terlebih Dahulu");
+        } else {
+
+            try {
+                String url = "http://202.154.24.4:81/mpd-wp/client/ws.php?type=json&module=bds&class=t_vat_settlement&method=printNoBayar&no_bayar=" + noBayar;
+                website = new URL(url);
+                rbc = Channels.newChannel(website.openStream());
+                String fileLocation = "E:\\" + noBayar + ".pdf";
+
+                fos = new FileOutputStream(fileLocation);
+                fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+
+                rbc.close();
+                fos.close();
+
+                Runtime rt = Runtime.getRuntime();
+                //Process pr = rt.exec("java -jar pdfbox-app-1.8.8.jar PDFReader "+fileLocation);
+                Process pr = rt.exec("sumatrapdf.exe -reuse-instance -view \"single view\" " + fileLocation);
+
+            } catch (IOException ex) {
+                Logger.getLogger(FormInputDataPembayaran.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnPrintNoPembayaranActionPerformed
+
+    private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
+        // TODO add your handling code here:
         
-        try {
-            String url = "http://202.154.24.4:81/mpd-wp/client/ws.php?type=json&module=bds&class=t_vat_settlement&method=printNoBayar&no_bayar="+noBayar;
-            website = new URL(url);
-            rbc = Channels.newChannel(website.openStream());
-            String fileLocation = "E:\\"+noBayar+".pdf";
+        if(formIsValid()) {
+            //t_cust_account_id
+            Item item = (Item) cmbNPWPD.getSelectedItem();
+            pembayaran.setT_cust_account_id(item.getId());
             
+            //p_finance_period_id
+            item = (Item) cmbPeriodePajak.getSelectedItem();
+            pembayaran.setP_finance_period_id(item.getId());
             
-            fos = new FileOutputStream(fileLocation);
-            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+            //start_period
+            pembayaran.setStart_period( dateMasaPajakFrom.getText() );
             
-            rbc.close();
-            fos.close();
+            //end period
+            pembayaran.setEnd_period( dateMasaPajakUntil.getText() );
             
-            Runtime rt = Runtime.getRuntime();
-            //Process pr = rt.exec("java -jar pdfbox-app-1.8.8.jar PDFReader "+fileLocation);
-            Process pr = rt.exec("sumatrapdf.exe -reuse-instance -view \"single view\" "+fileLocation);
+            //total_trans_amount
+            Integer total_trans_amount = Integer.parseInt(txtNilaiOmset.getText());
+            pembayaran.setTotal_trans_amount(total_trans_amount);
             
+            //total_vat_amount
+            Integer total_vat_amount = Integer.parseInt(txtNilaiHarusDibayar.getText());
+            pembayaran.setTotal_vat_amount(total_vat_amount);
             
-        } catch (IOException ex) {
-            Logger.getLogger(FormInputDataPembayaran.class.getName()).log(Level.SEVERE, null, ex);
+            //p_vat_type_dtl_id
+            item = (Item) cmbAyatPajak.getSelectedItem();
+            pembayaran.setP_vat_type_dtl_id(item.getId());
+            
+            //p_vat_type_dtl_cls_id
+            item = (Item) cmbKelasPajak.getSelectedItem();
+            pembayaran.setP_vat_type_dtl_cls_id(item.getId());
+            
+            //user_name {sudah ada di objek pembayaran}
+            
+            try {
+                pembayaran.doInsert();
+                
+                if(pembayaran.getNoPembayaran().equals("")) {
+                    JOptionPane.showMessageDialog(this.frame, "Data gagal tersimpan");
+                }else {
+                    txtNomorPembayaran.setText(pembayaran.getNoPembayaran());
+                    txtNilaiDenda.setText(String.valueOf(pembayaran.getNilaiPenalty()));
+                    JOptionPane.showMessageDialog(this.frame, "Data telah tersimpan. Nomor Pembayaran : "+ pembayaran.getNoPembayaran() +". Silahkan Cetak Nomor Pembayaran");
+                }
+                                
+            } catch (SQLException ex) {
+                Logger.getLogger(FormInputDataPembayaran.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+    }//GEN-LAST:event_btnSimpanActionPerformed
+    
+    private boolean formIsValid() {
+        
+        String message = "";
+        
+        String nomor_pembayaran = txtNomorPembayaran.getText();
+        if(!nomor_pembayaran.equals("")) {
+            message += "- Silahkan Cetak Nomor Pembayaran";
+            JOptionPane.showMessageDialog(this.frame, message);
+            return false;
         }
         
-    }//GEN-LAST:event_btnPrintNoPembayaranActionPerformed
+        Item item = (Item) cmbPeriodePajak.getSelectedItem();
+        if(item.getId() == null ) {
+            message += "- Periode Pajak Belum Diisi \n";
+        }
+        
+        String start_period = dateMasaPajakFrom.getText();
+        String end_period = dateMasaPajakUntil.getText();
+        
+        if(start_period.equals("") || end_period.equals("")) {
+            message += "- Masa Pajak Tidak Boleh Kosong \n";
+            JOptionPane.showMessageDialog(this.frame, message);
+            return false;
+        }
+        
+        
+        int total_trans_amount = Integer.parseInt(txtNilaiOmset.getText());
+        if(total_trans_amount == 0) {
+            message += "- Nilai Omset Belum Diisi \n";
+        }
+        
+        int total_vat_amount = Integer.parseInt(txtNilaiHarusDibayar.getText());
+        if(total_vat_amount == 0 ) {
+            message += "- Nilai Pajak Yang Harus Dibayar Belum Diisi\n";
+        }
+        
+        if(!message.equals("")) {
+            JOptionPane.showMessageDialog(this.frame, message);
+            return false;
+        }
+        
+        return true;
+    }
+    
     
     /**
      * @param args the command line arguments
