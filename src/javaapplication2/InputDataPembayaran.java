@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import mpd.dao.daoVatSettlement;
 import mpd.lib.PaginationVatSettlement;
+import mpd.model.Pembayaran;
 import mpd.model.VatSettlement;
 
 /**
@@ -31,8 +32,10 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
     public String vat_code;
     public Integer p_vat_type_dtl_id;
     public String vat_code_dtl;
+    public String user_name;
     private PaginationVatSettlement sett_pagination;
     public DBConnection dbConn;
+    private Pembayaran pembayaran;
     /**
      * Creates new form InputDataPembayaran
      */
@@ -79,8 +82,18 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
                 this.p_vat_type_id = rs.getInt("p_vat_type_id");
                 this.vat_code = rs.getString("vat_code");
                 this.p_vat_type_dtl_id = rs.getInt("p_vat_type_dtl_id");
-                this.vat_code = rs.getString("vat_code");
+                this.vat_code_dtl = rs.getString("vat_code_dtl");
+                
+                pembayaran.setT_cust_account_id(this.t_cust_account_id);
+                pembayaran.setNpwd(this.npwd);
+                pembayaran.setCompany_name(this.company_name);
+                pembayaran.setP_vat_type_id(this.p_vat_type_id);
+                pembayaran.setVat_code(this.vat_code);
+                pembayaran.setP_vat_type_dtl_id(this.p_vat_type_dtl_id);
+                pembayaran.setVat_code(this.vat_code_dtl);
             }
+            this.user_name = user_name;
+            pembayaran.setUser_name(this.user_name);
             
             con.close();
             st.close();
@@ -254,7 +267,7 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
     private void btnTambahPembayaranActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahPembayaranActionPerformed
         // TODO add your handling code here:
         //Tampilkan Form Input Pembayaran
-        FormInputDataPembayaran formInputDataPembayaran = new FormInputDataPembayaran(this.frame, true);
+        FormInputDataPembayaran formInputDataPembayaran = new FormInputDataPembayaran(this.frame, true, pembayaran);
         formInputDataPembayaran.setVisible(true);
     }//GEN-LAST:event_btnTambahPembayaranActionPerformed
 

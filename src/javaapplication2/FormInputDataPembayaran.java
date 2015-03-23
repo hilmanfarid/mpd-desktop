@@ -11,9 +11,14 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import mpd.model.Pembayaran;
 import virtualkeyboard.gui.DialogVirtualKeyboardNumber;
 
 
@@ -23,15 +28,38 @@ import virtualkeyboard.gui.DialogVirtualKeyboardNumber;
  */
 public class FormInputDataPembayaran extends javax.swing.JDialog {
     private final NewJFrame frame;
+    public DBConnection dbConn;
+    public Pembayaran pembayaran;
     /**
      * Creates new form FormInputDataPembayaran
      */
-    public FormInputDataPembayaran(NewJFrame parent, boolean modal) {
+    public FormInputDataPembayaran(NewJFrame parent, boolean modal, Pembayaran pembayaran) {
         
         super(parent, modal);
         this.frame = parent;
         initComponents();
         setLocation((Toolkit.getDefaultToolkit().getScreenSize().width - getWidth() ) / 2 ,(Toolkit.getDefaultToolkit().getScreenSize().height - getHeight()) / 2);
+        this.pembayaran = pembayaran;
+        initFormFields();
+    }
+    
+    private void initFormFields() {
+        
+        Connection con = dbConn.openConnection();
+        Statement st;
+        try {
+            st = con.createStatement();
+            
+            //add cmbNPWD
+            String query = "";
+            
+            
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(FormInputDataPembayaran.class.getName()).log(Level.SEVERE, null, ex);
+        }
+           
     }
 
     /**
@@ -344,7 +372,8 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
             fos.close();
             
             Runtime rt = Runtime.getRuntime();
-            Process pr = rt.exec("java -jar pdfbox-app-1.8.8.jar PDFReader "+fileLocation);
+            //Process pr = rt.exec("java -jar pdfbox-app-1.8.8.jar PDFReader "+fileLocation);
+            Process pr = rt.exec("sumatrapdf.exe -reuse-instance -view \"single view\" "+fileLocation);
             
             
         } catch (IOException ex) {
