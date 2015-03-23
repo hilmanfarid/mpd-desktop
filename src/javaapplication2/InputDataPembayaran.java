@@ -62,8 +62,7 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
             dtm.addRow(new Object[]{null, null, null, null, null, null, null, null, null, null});
             i_row++;
         }
-        //Object[] row = {"tes", null, null, null, null, null, null, null, null, null};
-        //dtm.addRow(row);
+        
     }
 
     private void initUserVars(String user_name) {
@@ -75,6 +74,7 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
                             "p_vat_type_id, vat_code, p_vat_type_dtl_id, vat_code_dtl\n" +
                             "from f_get_npwd_by_username('"+user_name+"') AS tbl (ty_lov_npwd)";
             ResultSet rs = st.executeQuery(query);
+            pembayaran = new Pembayaran();
             while(rs.next()) {
                 this.t_cust_account_id = rs.getInt("t_cust_account_id");
                 this.npwd = rs.getString("npwd");
