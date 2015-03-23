@@ -78,6 +78,11 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
                     Item item = (Item)cmbPeriodePajak.getSelectedItem();
                     dateMasaPajakFrom.setText( item.getAdditionalVal("start_period"));
                     dateMasaPajakUntil.setText( item.getAdditionalVal("end_period"));
+                    
+                    txtNilaiOmset.setText("0");
+                    txtNilaiHarusDibayar.setText("0");
+                    txtNilaiDenda.setText("0");
+                    txtTotalHarusBayar.setText("0");
                 }
             });
             
@@ -203,6 +208,16 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
         txtNilaiHarusDibayar.setBackground(new java.awt.Color(153, 255, 153));
         txtNilaiHarusDibayar.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         txtNilaiHarusDibayar.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtNilaiHarusDibayar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtNilaiHarusDibayarMouseClicked(evt);
+            }
+        });
+        txtNilaiHarusDibayar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNilaiHarusDibayarActionPerformed(evt);
+            }
+        });
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel14.setText("Rp.");
@@ -223,6 +238,16 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
         txtTotalHarusBayar.setBackground(new java.awt.Color(153, 255, 153));
         txtTotalHarusBayar.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         txtTotalHarusBayar.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtTotalHarusBayar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtTotalHarusBayarMouseClicked(evt);
+            }
+        });
+        txtTotalHarusBayar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTotalHarusBayarActionPerformed(evt);
+            }
+        });
 
         txtNomorPembayaran.setEditable(false);
         txtNomorPembayaran.setBackground(new java.awt.Color(153, 255, 153));
@@ -413,7 +438,7 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
                 String url = "http://202.154.24.4:81/mpd-wp/client/ws.php?type=json&module=bds&class=t_vat_settlement&method=printNoBayar&no_bayar=" + noBayar;
                 website = new URL(url);
                 rbc = Channels.newChannel(website.openStream());
-                String fileLocation = "E:\\" + noBayar + ".pdf";
+                String fileLocation = "pdf_pembayaran\\" + noBayar + ".pdf";
 
                 fos = new FileOutputStream(fileLocation);
                 fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
@@ -484,6 +509,42 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
             
         }
     }//GEN-LAST:event_btnSimpanActionPerformed
+
+    private void txtNilaiHarusDibayarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNilaiHarusDibayarActionPerformed
+        // TODO add your handling code here:
+        DialogVirtualKeyboardNumber dlg;
+        dlg = new DialogVirtualKeyboardNumber(this.frame, true, txtNilaiHarusDibayar);
+        dlg.setPoitToUp(false);
+        dlg.setShiftBs(false);
+        dlg.setLocaleL(Locale.ENGLISH);
+    }//GEN-LAST:event_txtNilaiHarusDibayarActionPerformed
+
+    private void txtNilaiHarusDibayarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtNilaiHarusDibayarMouseClicked
+        // TODO add your handling code here:
+        DialogVirtualKeyboardNumber dlg;
+        dlg = new DialogVirtualKeyboardNumber(this.frame, true, txtNilaiHarusDibayar);
+        dlg.setPoitToUp(false);
+        dlg.setShiftBs(false);
+        dlg.setLocaleL(Locale.ENGLISH);
+    }//GEN-LAST:event_txtNilaiHarusDibayarMouseClicked
+
+    private void txtTotalHarusBayarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalHarusBayarActionPerformed
+        // TODO add your handling code here:
+        DialogVirtualKeyboardNumber dlg;
+        dlg = new DialogVirtualKeyboardNumber(this.frame, true, txtTotalHarusBayar);
+        dlg.setPoitToUp(false);
+        dlg.setShiftBs(false);
+        dlg.setLocaleL(Locale.ENGLISH);
+    }//GEN-LAST:event_txtTotalHarusBayarActionPerformed
+
+    private void txtTotalHarusBayarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtTotalHarusBayarMouseClicked
+        // TODO add your handling code here:
+        DialogVirtualKeyboardNumber dlg;
+        dlg = new DialogVirtualKeyboardNumber(this.frame, true, txtTotalHarusBayar);
+        dlg.setPoitToUp(false);
+        dlg.setShiftBs(false);
+        dlg.setLocaleL(Locale.ENGLISH);
+    }//GEN-LAST:event_txtTotalHarusBayarMouseClicked
     
     private boolean formIsValid() {
         
