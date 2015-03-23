@@ -58,45 +58,26 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
             cmbNPWPD.addItem(new Item(pembayaran.getT_cust_account_id(), pembayaran.getNpwd()));
             
             /*add cmbPeriodePajak (mengambil 3 tahun kebelakang)*/
-            String query = "select p_finance_period_id, code from p_finance_period\n" +
+            String query = "select p_finance_period_id, code, to_char(start_date,'dd-mm-yyyy') as start_period, to_char(end_date,'dd-mm-yyyy') as end_period from p_finance_period\n" +
                             "where substring(code from char_length(code) - 3)::Integer >= extract(year from sysdate) - 3\n" +
                             "order by start_date desc";
             
             ResultSet rs = st.executeQuery(query);
             cmbPeriodePajak.addItem(new Item(null,""));
             while(rs.next()) {
-                cmbPeriodePajak.addItem(new Item(rs.getInt("p_finance_period_id"),rs.getString("code")));
+                Item periodItem = new Item(rs.getInt("p_finance_period_id"),rs.getString("code"));
+                periodItem.setAdditionalVal("start_period",rs.getString("start_period"));
+                periodItem.setAdditionalVal("end_period",rs.getString("end_period"));
+                cmbPeriodePajak.addItem(periodItem);
             }
             
             cmbPeriodePajak.addItemListener(new ItemListener() {
                 @Override
                 public void itemStateChanged(ItemEvent arg0) {
-                    //Do Something
+                    
                     Item item = (Item)cmbPeriodePajak.getSelectedItem();
-                    String query = "select to_char(start_date,'dd-mm-yyyy') as start_date, to_char(end_date,'dd-mm-yyyy') as end_date from p_finance_period\n" +
-                                    "where p_finance_period_id = "+ item.getId();
-                    
-                    Connection conlocal = DBConnection.openConnection();
-                   
-                    try {
-                        Statement stlocal = conlocal.createStatement();
-                        ResultSet rslocal = stlocal.executeQuery(query);
-                        while(rslocal.next()) {
-                            dateMasaPajakFrom.setText( rslocal.getString("start_date"));
-                            dateMasaPajakUntil.setText( rslocal.getString("end_date"));
-                        }
-                        
-                        txtNilaiOmset.setText("0");
-                        txtNilaiDenda.setText("0");
-                        txtNilaiHarusDibayar.setText("0");
-                        txtTotalHarusBayar.setText("0");
-                        
-                        stlocal.close();
-                        rslocal.close();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(FormInputDataPembayaran.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    
+                    dateMasaPajakFrom.setText( item.getAdditionalVal("start_period"));
+                    dateMasaPajakUntil.setText( item.getAdditionalVal("end_period"));
                 }
             });
             
