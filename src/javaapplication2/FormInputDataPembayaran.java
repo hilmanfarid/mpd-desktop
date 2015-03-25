@@ -159,6 +159,12 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Tambah Data Pelaporan");
 
+        cmbNPWPD.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+
+        cmbPeriodePajak.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+
+        cmbAyatPajak.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("NPWPD");
 
@@ -168,14 +174,20 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel5.setText("Ayat Pajak");
 
+        cmbKelasPajak.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel6.setText("Kelas Pajak");
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel7.setText("Masa Pajak");
 
+        dateMasaPajakFrom.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel8.setText("s.d");
+
+        dateMasaPajakUntil.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel9.setText("Nilai Omset");
@@ -192,7 +204,7 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
         jLabel13.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel13.setText("Nomor Pembayaran");
 
-        txtNilaiOmset.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtNilaiOmset.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtNilaiOmset.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtNilaiOmset.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -206,7 +218,7 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
         });
 
         txtNilaiHarusDibayar.setBackground(new java.awt.Color(153, 255, 153));
-        txtNilaiHarusDibayar.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtNilaiHarusDibayar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtNilaiHarusDibayar.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtNilaiHarusDibayar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -229,14 +241,14 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
         jLabel16.setText("Rp.");
 
         txtNilaiDenda.setBackground(new java.awt.Color(153, 255, 153));
-        txtNilaiDenda.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtNilaiDenda.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtNilaiDenda.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
         jLabel17.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel17.setText("Rp.");
 
         txtTotalHarusBayar.setBackground(new java.awt.Color(153, 255, 153));
-        txtTotalHarusBayar.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtTotalHarusBayar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtTotalHarusBayar.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtTotalHarusBayar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -251,7 +263,7 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
 
         txtNomorPembayaran.setEditable(false);
         txtNomorPembayaran.setBackground(new java.awt.Color(153, 255, 153));
-        txtNomorPembayaran.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtNomorPembayaran.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         btnPrintNoPembayaran.setText("Print No Pembayaran");
         btnPrintNoPembayaran.addActionListener(new java.awt.event.ActionListener() {
@@ -281,8 +293,13 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnPrintNoPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(layout.createSequentialGroup()
+                            .addComponent(btnSimpan, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btnTutup, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel5)
                                 .addComponent(jLabel4)
@@ -301,35 +318,31 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
                                     .addComponent(jLabel8)
                                     .addGap(18, 18, 18)
                                     .addComponent(dateMasaPajakUntil, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel14)
-                                        .addComponent(jLabel15))
-                                    .addGap(31, 31, 31)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(txtNilaiHarusDibayar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
-                                        .addComponent(txtNilaiDenda, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtNilaiOmset)))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(cmbNPWPD, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(cmbKelasPajak, javax.swing.GroupLayout.Alignment.LEADING, 0, 277, Short.MAX_VALUE)
                                     .addComponent(cmbAyatPajak, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(cmbNPWPD, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(cmbPeriodePajak, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel12)
-                                .addComponent(jLabel13))
+                                    .addComponent(cmbPeriodePajak, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txtTotalHarusBayar, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel14)
+                                            .addComponent(jLabel15))
+                                        .addGap(31, 31, 31)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(txtNilaiHarusDibayar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
+                                            .addComponent(txtNilaiDenda, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtNilaiOmset))))))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel17)
-                                .addComponent(txtNomorPembayaran)))
-                        .addComponent(txtTotalHarusBayar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addComponent(btnSimpan, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(26, 26, 26)
-                            .addComponent(btnTutup, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(btnPrintNoPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(33, Short.MAX_VALUE))
+                                .addComponent(txtNomorPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(55, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
@@ -389,9 +402,9 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addComponent(btnPrintNoPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnTutup, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnSimpan, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnTutup, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSimpan, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -552,7 +565,7 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
         
         String nomor_pembayaran = txtNomorPembayaran.getText();
         if(!nomor_pembayaran.equals("")) {
-            message += "- Silahkan Cetak Nomor Pembayaran";
+            message += "Data sudah tersimpan. Silahkan Print Nomor Pembayaran";
             JOptionPane.showMessageDialog(this.frame, message);
             return false;
         }
