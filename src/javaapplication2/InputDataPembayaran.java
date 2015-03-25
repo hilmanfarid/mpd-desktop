@@ -487,12 +487,12 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
     private void btn_uploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_uploadActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
-        /*ViewUploadDokumen viewDocUpload = new ViewUploadDokumen(frame,this);
+        ViewUploadDokumen viewDocUpload = new ViewUploadDokumen(frame,this);
         viewDocUpload.pack();
             
         frame.getContentPane().add(viewDocUpload);
         frame.setContentPane(viewDocUpload);
-        viewDocUpload.setVisible(true);*/
+        viewDocUpload.setVisible(true);
     }//GEN-LAST:event_btn_uploadActionPerformed
 
 
