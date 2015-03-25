@@ -128,7 +128,8 @@ public class daoVatSettlement{
             PreparedStatement st = connection.prepareStatement(select+order_and_limit);
             st.setInt(1, t_cust_account_id_search);
             st.setInt(2, limit);
-            st.setInt(3, ((start-1)*limit)+1);
+            st.setInt(3, ((start-1)*limit));
+            System.out.println(st);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 VatSettlement b = new VatSettlement();

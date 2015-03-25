@@ -48,9 +48,15 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
         daoVatSettlement sett = new daoVatSettlement();
         sett.t_cust_account_id_search = this.t_cust_account_id;
         sett_pagination = new PaginationVatSettlement(sett);
-        sett.size_per_page=15;
-        List<VatSettlement> res = sett.getALL(1,15, "t_vat_setllement_id", "DESC");
-        int total_row= 15;
+        sett.size_per_page=10;
+        if (dtm.getRowCount() > 0) {
+            for (int i = dtm.getRowCount() - 1; i > -1; i--) {
+                dtm.removeRow(i);
+            }
+        }
+        
+        List<VatSettlement> res = sett.getALL(1,sett.size_per_page, "t_vat_setllement_id", "DESC");
+        int total_row= sett.size_per_page;
         int i_row=1;
         for (VatSettlement temp : res) {
                 Object[] row = temp.getRow();
@@ -58,11 +64,14 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
                 dtm.addRow(row);
                 i_row++;
 	}
-        while(i_row <= 15){
+        while(i_row <= sett.size_per_page){
             dtm.addRow(new Object[]{null, null, null, null, null, null, null, null, null, null});
             i_row++;
         }
-        
+        num_of_pages.setText("Halaman "+sett_pagination.getCurrentPage()+" dari "+(int)Math.ceil((float)sett_pagination.total_data/sett_pagination.getDao().size_per_page));
+        num_data_pages.setText("Menampilkan "+(((sett_pagination.getCurrentPage()-1)*sett_pagination.getDao().size_per_page)+1)+" s.d "+dtm.getRowCount()+" dari "+sett_pagination.total_data+" Data");
+        //Object[] row = {"tes", null, null, null, null, null, null, null, null, null};
+        //dtm.addRow(row);
     }
 
     private void initUserVars(String user_name) {
@@ -123,10 +132,23 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
         btn_prev = new javax.swing.JButton();
         btn_next = new javax.swing.JButton();
         btn_last = new javax.swing.JButton();
+        num_of_pages = new javax.swing.JLabel();
+        num_data_pages = new javax.swing.JLabel();
+        btn_upload = new javax.swing.JButton();
 
+        tblPelaporan.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tblPelaporan.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
                 "NPWPD", "Status Pembayaran", "Periode", "Total Transaksi", "Pajak", "Denda", "Total yang harus dibayar", "No Pembayaran", "Jatuh Tempo Pelaporan", "Batas Waktu Pembayaran"
@@ -148,6 +170,7 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
             }
         });
         tblPelaporan.setMaximumSize(new java.awt.Dimension(2147483647, 267));
+        tblPelaporan.setRowHeight(35);
         jScrollPane1.setViewportView(tblPelaporan);
 
         btnTambahPembayaran.setText("Tambah Data Pembayaran");
@@ -183,6 +206,11 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
         btn_first3.setMinimumSize(new java.awt.Dimension(70, 40));
         btn_first3.setName("btn_first"); // NOI18N
         btn_first3.setPreferredSize(new java.awt.Dimension(70, 40));
+        btn_first3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_first3ActionPerformed(evt);
+            }
+        });
         jPanel2.add(btn_first3);
 
         btn_prev.setText("<");
@@ -221,6 +249,18 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
         });
         jPanel2.add(btn_last);
 
+        num_of_pages.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        num_of_pages.setText("Halaman 1 dari 10");
+
+        num_data_pages.setText("Menampilkan 1 s.d 2 dari 10 Data");
+
+        btn_upload.setText("Upload");
+        btn_upload.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_uploadActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -230,16 +270,22 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnTambahPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnSubmitLaporanPajak, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnTambahPembayaran)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnHapus)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSubmitLaporanPajak)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btn_upload, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(cmbNpwpd, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnLogout))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(num_of_pages)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(num_data_pages)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -247,18 +293,22 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnSubmitLaporanPajak, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(btnLogout, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnTambahPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmbNpwpd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(btnLogout, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnTambahPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cmbNpwpd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnSubmitLaporanPajak, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btn_upload, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(num_of_pages)
+                    .addComponent(num_data_pages))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
 
         pack();
@@ -322,6 +372,31 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
 
     private void btn_lastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_lastActionPerformed
         // TODO add your handling code here:
+         DefaultTableModel dtm = (DefaultTableModel) this.tblPelaporan.getModel();
+        List<VatSettlement> res = sett_pagination.lastPage();
+        if(res == null){
+           return;
+        }
+        int total_row= sett_pagination.getDao().size_per_page;
+        int i_row=1;
+        int data_till_now = dtm.getRowCount();
+        if (dtm.getRowCount() > 0) {
+            for (int i = dtm.getRowCount() - 1; i > -1; i--) {
+                dtm.removeRow(i);
+            }
+        }
+        for (VatSettlement temp : res) {
+                Object[] row = temp.getRow();
+                System.out.println(row);
+                dtm.addRow(row);
+                i_row++;
+	}
+        while(i_row <= total_row){
+            dtm.addRow(new Object[]{null, null, null, null, null, null, null, null, null, null});
+            i_row++;
+        }
+        num_of_pages.setText("Halaman "+sett_pagination.getCurrentPage()+" dari "+(int)Math.ceil((float)sett_pagination.total_data/sett_pagination.getDao().size_per_page));
+        num_data_pages.setText("Menampilkan "+(((sett_pagination.getCurrentPage()-1)*sett_pagination.getDao().size_per_page)+1)+" s.d "+((int)res.size()+(sett_pagination.getDao().size_per_page*(sett_pagination.getCurrentPage()-1)))+" dari "+sett_pagination.total_data+" Data");
     }//GEN-LAST:event_btn_lastActionPerformed
 
     private void btn_nextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nextActionPerformed
@@ -331,8 +406,9 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
         if(res == null){
            return;
         }
-        int total_row= 15;
+        int total_row= sett_pagination.getDao().size_per_page;
         int i_row=1;
+        int data_till_now = dtm.getRowCount();
         if (dtm.getRowCount() > 0) {
             for (int i = dtm.getRowCount() - 1; i > -1; i--) {
                 dtm.removeRow(i);
@@ -344,10 +420,12 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
                 dtm.addRow(row);
                 i_row++;
 	}
-        while(i_row <= 15){
+        while(i_row <= total_row){
             dtm.addRow(new Object[]{null, null, null, null, null, null, null, null, null, null});
             i_row++;
         }
+        num_of_pages.setText("Halaman "+sett_pagination.getCurrentPage()+" dari "+(int)Math.ceil((float)sett_pagination.total_data/sett_pagination.getDao().size_per_page));
+        num_data_pages.setText("Menampilkan "+(((sett_pagination.getCurrentPage()-1)*sett_pagination.getDao().size_per_page)+1)+" s.d "+((int)res.size()+(sett_pagination.getDao().size_per_page*(sett_pagination.getCurrentPage()-1)))+" dari "+sett_pagination.total_data+" Data");
     }//GEN-LAST:event_btn_nextActionPerformed
 
     private void btn_prevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_prevActionPerformed
@@ -357,7 +435,7 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
         if(res == null){
            return;
         }
-        int total_row= 15;
+        int total_row= sett_pagination.getDao().size_per_page;
         int i_row=1;
         if (dtm.getRowCount() > 0) {
             for (int i = dtm.getRowCount() - 1; i > -1; i--) {
@@ -370,11 +448,52 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
                 dtm.addRow(row);
                 i_row++;
 	}
-        while(i_row <= 15){
+        while(i_row <= total_row){
             dtm.addRow(new Object[]{null, null, null, null, null, null, null, null, null, null});
             i_row++;
         }
+        num_of_pages.setText("Halaman "+sett_pagination.getCurrentPage()+" dari "+(int)Math.ceil((float)sett_pagination.total_data/sett_pagination.getDao().size_per_page));
+        num_data_pages.setText("Menampilkan "+(((sett_pagination.getCurrentPage()-1)*sett_pagination.getDao().size_per_page)+1)+" s.d "+((int)res.size()+(sett_pagination.getDao().size_per_page*(sett_pagination.getCurrentPage()-1)))+" dari "+sett_pagination.total_data+" Data");
     }//GEN-LAST:event_btn_prevActionPerformed
+
+    private void btn_first3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_first3ActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel dtm = (DefaultTableModel) this.tblPelaporan.getModel();
+        List<VatSettlement> res = sett_pagination.firstPage();
+        if(res == null){
+           return;
+        }
+        int total_row= sett_pagination.getDao().size_per_page;
+        int i_row=1;
+        if (dtm.getRowCount() > 0) {
+            for (int i = dtm.getRowCount() - 1; i > -1; i--) {
+                dtm.removeRow(i);
+            }
+        }
+        for (VatSettlement temp : res) {
+                Object[] row = temp.getRow();
+                System.out.println(row);
+                dtm.addRow(row);
+                i_row++;
+	}
+        while(i_row <= total_row){
+            dtm.addRow(new Object[]{null, null, null, null, null, null, null, null, null, null});
+            i_row++;
+        }
+        num_of_pages.setText("Halaman "+sett_pagination.getCurrentPage()+" dari "+(int)Math.ceil((float)sett_pagination.total_data/sett_pagination.getDao().size_per_page));
+        num_data_pages.setText("Menampilkan "+(((sett_pagination.getCurrentPage()-1)*sett_pagination.getDao().size_per_page)+1)+" s.d "+((int)res.size()+(sett_pagination.getDao().size_per_page*(sett_pagination.getCurrentPage()-1)))+" dari "+sett_pagination.total_data+" Data");
+    }//GEN-LAST:event_btn_first3ActionPerformed
+
+    private void btn_uploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_uploadActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        ViewUploadDokumen viewDocUpload = new ViewUploadDokumen(frame,this);
+        viewDocUpload.pack();
+            
+        frame.getContentPane().add(viewDocUpload);
+        frame.setContentPane(viewDocUpload);
+        viewDocUpload.setVisible(true);
+    }//GEN-LAST:event_btn_uploadActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -386,10 +505,12 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
     private javax.swing.JButton btn_last;
     private javax.swing.JButton btn_next;
     private javax.swing.JButton btn_prev;
+    private javax.swing.JButton btn_upload;
     private javax.swing.JComboBox cmbNpwpd;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel num_data_pages;
+    private javax.swing.JLabel num_of_pages;
     private javax.swing.JTable tblPelaporan;
     // End of variables declaration//GEN-END:variables
 }
