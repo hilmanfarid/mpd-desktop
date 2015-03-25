@@ -5,6 +5,7 @@
 package javaapplication2;
 
 import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -64,6 +65,8 @@ public class NewJFrame extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(2147483647, 2147483647));
+        setResizable(false);
 
         jPanel1.setMinimumSize(new java.awt.Dimension(32767, 32767));
 
@@ -162,11 +165,11 @@ public class NewJFrame extends javax.swing.JFrame {
          Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
             public void run() {
                 NewJFrame f = new NewJFrame();
-                f.setExtendedState(f.MAXIMIZED_BOTH);
-                f.setVisible(true);    // FIRST visible = true
-                f.setResizable(false); // THEN  resizable = false
+                f.setExtendedState(f.getExtendedState()|f.MAXIMIZED_BOTH);
+                f.setUndecorated(true);
+                f.setVisible(true);    // FIRST visible = true // THEN  resizable = false
                 f.setDefaultCloseOperation(f.EXIT_ON_CLOSE);
-
+                //GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(f);
             }
         });
     }
