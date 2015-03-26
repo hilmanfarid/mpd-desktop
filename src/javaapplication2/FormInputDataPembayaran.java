@@ -448,7 +448,7 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
         } else {
 
             try {
-                String url = "http://202.154.24.4:81/mpd-wp/client/ws.php?type=json&module=bds&class=t_vat_settlement&method=printNoBayar&no_bayar=" + noBayar;
+                String url = "http://202.154.24.3:81/mpd/report/cetak_no_bayar_anjungan.php?no_bayar=" + noBayar;
                 website = new URL(url);
                 rbc = Channels.newChannel(website.openStream());
                 String fileLocation = "pdf_pembayaran\\" + noBayar + ".pdf";
