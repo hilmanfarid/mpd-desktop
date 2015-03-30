@@ -296,7 +296,8 @@ public class VatSettlement{
             this.getpayment_key(), 
             this.getdue_date(), 
             this.getpayment_due_day(),
-            this.gett_customer_order_id()
+            this.gett_customer_order_id(),
+            this.gett_vat_setllement_id()
         };   
         return data;
     }

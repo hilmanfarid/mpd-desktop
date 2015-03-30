@@ -48,10 +48,10 @@ public class daoVatSettlement{
                     "		left join t_cust_account cust_acc on cust_acc.t_cust_account_id = settlement.t_cust_account_id\n"+
                     "where\n"+
                     "settlement.t_cust_account_id = ? \n" +
-                    "--and settlement.p_settlement_type_id = 1\n";/* +
+                    "--and settlement.p_settlement_type_id = 1\n"+
                     "and cust_order.p_order_status_id = 1\n" +
                     "and settlement.payment_key is not null\n" +
-                    "and settlement.payment_key <> ''";*/
+                    "and settlement.payment_key <> ''";
                     
     final String carinama = "SELECT * FROM VatSettlement where nama like ?";
 

@@ -22,7 +22,7 @@ public class PaginationCustLegalDoc {
         this.total_data = dao.getCount();
     }
     public List<CustLegalDoc> nextPage(){
-        if(page_now > Math.floor(total_data/this.dao.size_per_page)){
+        if(page_now >= Math.floor(total_data/this.dao.size_per_page)){
             System.out.println(page_now);
             return null;
         }
@@ -32,7 +32,7 @@ public class PaginationCustLegalDoc {
         return rs_vat_setllement;
     }
     public List<CustLegalDoc> lastPage(){
-        if(page_now > Math.floor(total_data/this.dao.size_per_page)){
+        if(page_now >= Math.floor(total_data/this.dao.size_per_page)){
             System.out.println(page_now);
             return null;
         }

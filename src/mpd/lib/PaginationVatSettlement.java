@@ -23,7 +23,7 @@ public class PaginationVatSettlement {
         this.total_data = dao.getCount();
     }
     public List<VatSettlement> nextPage(){
-        if(page_now > Math.floor(total_data/this.dao.size_per_page)){
+        if(page_now >= Math.floor(total_data/this.dao.size_per_page)){
             System.out.println(page_now);
             return null;
         }
@@ -33,7 +33,7 @@ public class PaginationVatSettlement {
         return rs_vat_setllement;
     }
     public List<VatSettlement> lastPage(){
-        if(page_now > Math.floor(total_data/this.dao.size_per_page)){
+        if(page_now >= Math.floor(total_data/this.dao.size_per_page)){
             System.out.println(page_now);
             return null;
         }

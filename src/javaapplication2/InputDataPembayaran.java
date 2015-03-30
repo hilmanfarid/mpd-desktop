@@ -37,6 +37,7 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
     public DBConnection dbConn;
     private Pembayaran pembayaran;
     public int t_customer_order_id;
+    private int[] tablerows;
     /**
      * Creates new form InputDataPembayaran
      */
@@ -66,7 +67,7 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
                 i_row++;
 	}
         while(i_row <= sett.size_per_page){
-            dtm.addRow(new Object[]{null, null, null, null, null, null, null, null, null, null});
+            dtm.addRow(new Object[]{null, null, null, null, null, null, null, null, null, null,null});
             i_row++;
         }
         num_of_pages.setText("Halaman "+sett_pagination.getCurrentPage()+" dari "+(int)Math.ceil((float)sett_pagination.total_data/sett_pagination.getDao().size_per_page));
@@ -140,26 +141,26 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
         tblPelaporan.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tblPelaporan.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "NPWPD", "Status Pembayaran", "Periode", "Total Transaksi", "Pajak", "Denda", "Total yang harus dibayar", "No Pembayaran", "Jatuh Tempo Pelaporan", "Batas Waktu Pembayaran", "t_customer_order_id"
+                "NPWPD", "Status Pembayaran", "Periode", "Total Transaksi", "Pajak", "Denda", "Total yang harus dibayar", "No Pembayaran", "Jatuh Tempo Pelaporan", "Batas Waktu Pembayaran", "t_customer_order_id", "t_vat_setllement_id"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, true, true, true
+                false, false, false, false, false, false, false, false, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -176,9 +177,6 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
         tblPelaporan.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblPelaporanMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                tblPelaporanMouseEntered(evt);
             }
         });
         jScrollPane1.setViewportView(tblPelaporan);
@@ -359,7 +357,9 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
         
         if(dialogResult == 0) { // if yes
             //do hapus
-            
+            for (int i = 0; i < tablerows.length; i++) {
+                int j = tablerows[i];  
+            }
             
         }else {
             //do nothing
@@ -382,7 +382,7 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
 
     private void btn_lastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_lastActionPerformed
         // TODO add your handling code here:
-         DefaultTableModel dtm = (DefaultTableModel) this.tblPelaporan.getModel();
+        DefaultTableModel dtm = (DefaultTableModel) this.tblPelaporan.getModel();
         List<VatSettlement> res = sett_pagination.lastPage();
         if(res == null){
            return;
@@ -402,7 +402,7 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
                 i_row++;
 	}
         while(i_row <= total_row){
-            dtm.addRow(new Object[]{null, null, null, null, null, null, null, null, null, null});
+            dtm.addRow(new Object[]{null, null, null, null, null, null, null, null, null, null,null});
             i_row++;
         }
         num_of_pages.setText("Halaman "+sett_pagination.getCurrentPage()+" dari "+(int)Math.ceil((float)sett_pagination.total_data/sett_pagination.getDao().size_per_page));
@@ -431,7 +431,7 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
                 i_row++;
 	}
         while(i_row <= total_row){
-            dtm.addRow(new Object[]{null, null, null, null, null, null, null, null, null, null});
+            dtm.addRow(new Object[]{null, null, null, null, null, null, null, null, null, null,null});
             i_row++;
         }
         num_of_pages.setText("Halaman "+sett_pagination.getCurrentPage()+" dari "+(int)Math.ceil((float)sett_pagination.total_data/sett_pagination.getDao().size_per_page));
@@ -459,9 +459,10 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
                 i_row++;
 	}
         while(i_row <= total_row){
-            dtm.addRow(new Object[]{null, null, null, null, null, null, null, null, null, null});
+            dtm.addRow(new Object[]{null, null, null, null, null, null, null, null, null, null,null});
             i_row++;
         }
+       // tblPelaporan.removeColumn(tblPelaporan.getColumnModel().getColumn(10));
         num_of_pages.setText("Halaman "+sett_pagination.getCurrentPage()+" dari "+(int)Math.ceil((float)sett_pagination.total_data/sett_pagination.getDao().size_per_page));
         num_data_pages.setText("Menampilkan "+(((sett_pagination.getCurrentPage()-1)*sett_pagination.getDao().size_per_page)+1)+" s.d "+((int)res.size()+(sett_pagination.getDao().size_per_page*(sett_pagination.getCurrentPage()-1)))+" dari "+sett_pagination.total_data+" Data");
     }//GEN-LAST:event_btn_prevActionPerformed
@@ -487,7 +488,7 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
                 i_row++;
 	}
         while(i_row <= total_row){
-            dtm.addRow(new Object[]{null, null, null, null, null, null, null, null, null, null});
+            dtm.addRow(new Object[]{null, null, null, null, null, null, null, null, null, null,null});
             i_row++;
         }
         num_of_pages.setText("Halaman "+sett_pagination.getCurrentPage()+" dari "+(int)Math.ceil((float)sett_pagination.total_data/sett_pagination.getDao().size_per_page));
@@ -512,7 +513,7 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
     private void tblPelaporanMouseClicked(java.awt.event.MouseEvent evt) {                                          
         // TODO add your handling code here:
         int idx = tblPelaporan.getSelectedRow();
-        /////
+        this.tablerows  = tblPelaporan.getSelectedRows();
         this.t_customer_order_id = (int) tblPelaporan.getModel().getValueAt(idx, 10);
     }   
     // Variables declaration - do not modify//GEN-BEGIN:variables
