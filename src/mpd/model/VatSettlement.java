@@ -295,29 +295,9 @@ public class VatSettlement{
             this.gettotal_vat_amount()+this.gettotal_penalty_amount(), 
             this.getpayment_key(), 
             this.getdue_date(), 
-            this.getpayment_due_day()
-        };
-        
-        /*Object[] data = {this.gett_vat_setllement_id(), 
-                        this.gett_customer_order_id(),
-                        this.getsettlement_date(),
-                        this.getp_finance_period_id(),
-                        this.gett_cust_account_id(),
-                        this.getnpwd(),
-                        this.gettotal_trans_amount(),
-                        this.gettotal_vat_amount(),
-                        this.getp_settlement_type_id(),
-                        this.getfinance_periode_code(),
-                        this.gettotal_penalty_amount(),
-                        this.getpayment_key(),
-                        this.getis_settled(),
-                        this.getdue_date(),
-                        this.getpayment_due_day(),
-                        this.getorder_no(),
-                        this.getcreation_date(),
-                        this.getcreated_by(),
-                        this.getupdated_date(), 
-                        this.getupdated_by()};*/
+            this.getpayment_due_day(),
+            this.gett_customer_order_id()
+        };   
         return data;
     }
 }
