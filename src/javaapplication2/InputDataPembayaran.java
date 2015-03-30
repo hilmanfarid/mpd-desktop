@@ -512,6 +512,7 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
     private void tblPelaporanMouseClicked(java.awt.event.MouseEvent evt) {                                          
         // TODO add your handling code here:
         int idx = tblPelaporan.getSelectedRow();
+        /////
         this.t_customer_order_id = (int) tblPelaporan.getModel().getValueAt(idx, 10);
     }   
     // Variables declaration - do not modify//GEN-BEGIN:variables
