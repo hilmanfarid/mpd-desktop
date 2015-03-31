@@ -23,8 +23,9 @@ public class PaginationVatSettlement {
         this.total_data = dao.getCount();
     }
     public List<VatSettlement> nextPage(){
-        if(page_now >= Math.floor(total_data/this.dao.size_per_page)){
-            System.out.println(page_now);
+        if(page_now >= Math.ceil((float)total_data/(float)this.dao.size_per_page)){
+            System.out.println(Math.ceil(total_data));
+            System.out.println(Math.ceil((float)total_data/(float)this.dao.size_per_page));
             return null;
         }
         page_now=page_now+1;
@@ -33,8 +34,9 @@ public class PaginationVatSettlement {
         return rs_vat_setllement;
     }
     public List<VatSettlement> lastPage(){
-        if(page_now >= Math.floor(total_data/this.dao.size_per_page)){
-            System.out.println(page_now);
+        if(page_now >= Math.ceil((float)total_data/(float)this.dao.size_per_page)){
+            System.out.println(Math.ceil(total_data));
+            System.out.println(Math.ceil((float)total_data/(float)this.dao.size_per_page));
             return null;
         }
         page_now=(int)Math.ceil((float)total_data/getDao().size_per_page);
@@ -67,5 +69,8 @@ public class PaginationVatSettlement {
     }
     public int getCurrentPage(){
         return this.page_now;
+    }
+    public void setCurrentPage(int page_set){
+        this.page_now = page_set;
     }
 }

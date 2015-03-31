@@ -37,7 +37,7 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
     public DBConnection dbConn;
     private Pembayaran pembayaran;
     public int t_customer_order_id;
-    private int[] tablerows;
+    private int t_vat_setllement_id;
     /**
      * Creates new form InputDataPembayaran
      */
@@ -67,9 +67,11 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
                 i_row++;
 	}
         while(i_row <= sett.size_per_page){
-            dtm.addRow(new Object[]{null, null, null, null, null, null, null, null, null, null,null});
+            dtm.addRow(new Object[]{null, null, null, null, null, null, null, null, null,null,null,null});
             i_row++;
         }
+        tblPelaporan.removeColumn(tblPelaporan.getColumnModel().getColumn(10));
+        tblPelaporan.removeColumn(tblPelaporan.getColumnModel().getColumn(10));
         num_of_pages.setText("Halaman "+sett_pagination.getCurrentPage()+" dari "+(int)Math.ceil((float)sett_pagination.total_data/sett_pagination.getDao().size_per_page));
         num_data_pages.setText("Menampilkan "+(((sett_pagination.getCurrentPage()-1)*sett_pagination.getDao().size_per_page)+1)+" s.d "+dtm.getRowCount()+" dari "+sett_pagination.total_data+" Data");
         //Object[] row = {"tes", null, null, null, null, null, null, null, null, null};
@@ -340,7 +342,7 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
             this.frame.setContentPane(thisPanel);
             this.frame.invalidate();
             this.frame.validate();
-
+            
             this.dispose();
         }else{
             
@@ -357,10 +359,11 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
         
         if(dialogResult == 0) { // if yes
             //do hapus
-            for (int i = 0; i < tablerows.length; i++) {
-                int j = tablerows[i];  
-            }
-            
+            daoVatSettlement dao = new daoVatSettlement();
+            dao.t_cust_account_id_search = this.t_cust_account_id;
+            dao.delete(t_vat_setllement_id);
+            sett_pagination.total_data = dao.getCount();
+            refreshTable();
         }else {
             //do nothing
         }
@@ -462,7 +465,6 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
             dtm.addRow(new Object[]{null, null, null, null, null, null, null, null, null, null,null});
             i_row++;
         }
-       // tblPelaporan.removeColumn(tblPelaporan.getColumnModel().getColumn(10));
         num_of_pages.setText("Halaman "+sett_pagination.getCurrentPage()+" dari "+(int)Math.ceil((float)sett_pagination.total_data/sett_pagination.getDao().size_per_page));
         num_data_pages.setText("Menampilkan "+(((sett_pagination.getCurrentPage()-1)*sett_pagination.getDao().size_per_page)+1)+" s.d "+((int)res.size()+(sett_pagination.getDao().size_per_page*(sett_pagination.getCurrentPage()-1)))+" dari "+sett_pagination.total_data+" Data");
     }//GEN-LAST:event_btn_prevActionPerformed
@@ -513,7 +515,7 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
     private void tblPelaporanMouseClicked(java.awt.event.MouseEvent evt) {                                          
         // TODO add your handling code here:
         int idx = tblPelaporan.getSelectedRow();
-        this.tablerows  = tblPelaporan.getSelectedRows();
+        this.t_vat_setllement_id  = (int) tblPelaporan.getModel().getValueAt(tblPelaporan.getSelectedRow(), 11);
         this.t_customer_order_id = (int) tblPelaporan.getModel().getValueAt(idx, 10);
     }   
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -533,4 +535,30 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
     private javax.swing.JLabel num_of_pages;
     private javax.swing.JTable tblPelaporan;
     // End of variables declaration//GEN-END:variables
+    public void refreshTable(){
+        DefaultTableModel dtm = (DefaultTableModel) this.tblPelaporan.getModel();
+        List<VatSettlement> res = sett_pagination.getDao().getALL(sett_pagination.getCurrentPage(), sett_pagination.getDao().size_per_page, title, title);
+        if(res == null){
+           return;
+        }
+        int total_row= sett_pagination.getDao().size_per_page;
+        int i_row=1;
+        if (dtm.getRowCount() > 0) {
+            for (int i = dtm.getRowCount() - 1; i > -1; i--) {
+                dtm.removeRow(i);
+            }
+        }
+        for (VatSettlement temp : res) {
+                Object[] row = temp.getRow();
+                System.out.println(row);
+                dtm.addRow(row);
+                i_row++;
+	}
+        while(i_row <= total_row){
+            dtm.addRow(new Object[]{null, null, null, null, null, null, null, null, null, null,null});
+            i_row++;
+        }
+        num_of_pages.setText("Halaman "+sett_pagination.getCurrentPage()+" dari "+(int)Math.ceil((float)sett_pagination.total_data/sett_pagination.getDao().size_per_page));
+        num_data_pages.setText("Menampilkan "+(((sett_pagination.getCurrentPage()-1)*sett_pagination.getDao().size_per_page)+1)+" s.d "+((int)res.size()+(sett_pagination.getDao().size_per_page*(sett_pagination.getCurrentPage()-1)))+" dari "+sett_pagination.total_data+" Data");
+    }
 }

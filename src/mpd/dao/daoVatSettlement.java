@@ -19,7 +19,7 @@ public class daoVatSettlement{
     public String order_and_limit=" order by settlement.start_period DESC,settlement.t_vat_setllement_id DESC LIMIT ? OFFSET ? ";
     final String insert = "INSERT INTO VatSettlement (nomer, nama, alamat) VALUES (?, ?, ?);";
     final String update = "UPDATE VatSettlement set nomer=?, nama=?, alamat=? where id=? ;";
-    final String delete = "DELETE FROM VatSettlement where id=? ;";
+    final String delete = "select o_result_code,o_result_msg from f_del_vat_setllement(?,34,'23');";
     final String select = "SELECT\n" +
                     "     cust_order.t_customer_order_id AS t_customer_order_id,\n" +
                     "     settlement.*, \n" +
@@ -104,17 +104,21 @@ public class daoVatSettlement{
     }
 
     public void delete(int id) {
-        PreparedStatement statement = null;
+        PreparedStatement stat = null;
+        ResultSet res;
         try {
-            statement = connection.prepareStatement(delete);
-            statement.setInt(1, id);
-            statement.executeUpdate();
+            stat = connection.prepareStatement(delete);
+            stat.setInt(1, id);
+            //System.out.println(stat);
+            res = stat.executeQuery();
+            res.next();
+            System.out.println(res.getString(2));
 
         } catch (SQLException ex) {
             ex.printStackTrace();
         } finally {
             try {
-                statement.close();
+                stat.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
@@ -129,7 +133,7 @@ public class daoVatSettlement{
             st.setInt(1, t_cust_account_id_search);
             st.setInt(2, limit);
             st.setInt(3, ((start-1)*limit));
-            System.out.println(st);
+            //System.out.println(st);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 VatSettlement b = new VatSettlement();
@@ -163,7 +167,6 @@ public class daoVatSettlement{
         } catch (SQLException ex) {
             Logger.getLogger(daoVatSettlement.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         return lb;
     }
     public int getCount(){
@@ -171,6 +174,7 @@ public class daoVatSettlement{
             PreparedStatement st = connection.prepareStatement("select count(*) from ("+select+")");
             st.setInt(1, t_cust_account_id_search);
             ResultSet rs = st.executeQuery();
+            //System.out.println(st);
             rs.next();
             return rs.getInt(1);
         } catch (SQLException ex) {
