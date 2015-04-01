@@ -21,13 +21,21 @@ public class UlploadDoc {
     public UlploadDoc(String user_name) {
         this.user_name = user_name;
     }
-    public void httpConn(int t_customer_order_id,int p_legal_doc_type_id,String legal_doc_desc,String file_name,String file_location) {
+    public void httpConn(int t_customer_order_id,int p_legal_doc_type_id,String legal_doc_desc,String file_name,String file_location,int t_cust_order_legal_doc_id) {
         URLConnection conn = null;
         OutputStream os = null;
         InputStream is = null;
         try {
-            URL url = new URL("http://localhost:81/mpd-wp/server/ws.php?type=json&module=bds&class=upload_doc_local&method=create");
-            System.out.println("url:" + url);
+            URL url;
+            String param_t_cust_order_legal_doc_id = "";
+            if(t_cust_order_legal_doc_id == 0){
+                url = new URL("http://localhost:81/mpd-wp/server/ws.php?type=json&module=bds&class=upload_doc_local&method=create");
+                System.out.println("url:" + url);
+            }else{
+                url = new URL("http://localhost:81/mpd-wp/server/ws.php?type=json&module=bds&class=upload_doc_local&method=update");
+                param_t_cust_order_legal_doc_id = String.valueOf(t_cust_order_legal_doc_id);
+                System.out.println("url:" + url);
+            }
             conn = url.openConnection();
             conn.setDoOutput(true);
 
@@ -87,7 +95,7 @@ public class UlploadDoc {
             param_legal_doc_desc += legal_doc_desc;
 
             String json = "{"
-                    + "\"t_cust_order_legal_doc_id\":\"\","
+                    + "\"t_cust_order_legal_doc_id\":"+param_t_cust_order_legal_doc_id+","
                     + "\"t_customer_order_id\": "+t_customer_order_id+","
                     + "\"p_legal_doc_type_id\":\""+p_legal_doc_type_id+"\","
                     + "\"legal_doc_desc\":\""+legal_doc_desc+"\","

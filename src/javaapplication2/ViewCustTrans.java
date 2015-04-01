@@ -18,7 +18,7 @@ import mpd.model.CustLegalDoc;
  *
  * @author Admin
  */
-public final class ViewUploadDokumen extends javax.swing.JInternalFrame {
+public final class ViewCustTrans extends javax.swing.JInternalFrame {
     private final NewJFrame frame;
     private final InputDataPembayaran inDataPem;
     public final int t_customer_order_id;
@@ -27,7 +27,7 @@ public final class ViewUploadDokumen extends javax.swing.JInternalFrame {
     /**
      * Creates new form NewJInternalFrame
      */
-    public ViewUploadDokumen(NewJFrame frame,InputDataPembayaran inDataPem,int t_customer_order_id) {
+    public ViewCustTrans(NewJFrame frame,InputDataPembayaran inDataPem,int t_customer_order_id) {
         this.frame = frame;
         this.inDataPem = inDataPem;
         this.t_customer_order_id = t_customer_order_id;
@@ -89,6 +89,7 @@ public final class ViewUploadDokumen extends javax.swing.JInternalFrame {
         btn_last = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         CustLegalTable.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         CustLegalTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -215,6 +216,8 @@ public final class ViewUploadDokumen extends javax.swing.JInternalFrame {
             }
         });
 
+        jButton4.setText("Upload Excel");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -231,7 +234,8 @@ public final class ViewUploadDokumen extends javax.swing.JInternalFrame {
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 696, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(num_of_pages)
@@ -247,7 +251,8 @@ public final class ViewUploadDokumen extends javax.swing.JInternalFrame {
                     .addComponent(back_btn, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -256,7 +261,7 @@ public final class ViewUploadDokumen extends javax.swing.JInternalFrame {
                     .addComponent(num_data_pages))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addContainerGap(58, Short.MAX_VALUE))
         );
 
         pack();
@@ -457,6 +462,7 @@ public final class ViewUploadDokumen extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel num_data_pages;

@@ -5,6 +5,8 @@
  */
 package javaapplication2;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -84,8 +86,9 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
             Connection con = dbConn.openConnection();
             Statement st = con.createStatement();
             String query = "select ty_lov_npwd as t_cust_account_id, npwd, company_name,\n" +
-                            "p_vat_type_id, vat_code, p_vat_type_dtl_id, vat_code_dtl\n" +
-                            "from f_get_npwd_by_username('"+user_name+"') AS tbl (ty_lov_npwd)";
+                            "tbl.p_vat_type_id,  tbl.vat_code, tbl.p_vat_type_dtl_id, vat_code_dtl,typ_dtl.vat_pct\n" +
+                            "from f_get_npwd_by_username('"+user_name+"') AS tbl (ty_lov_npwd)"+
+                            "left join p_vat_type_dtl typ_dtl on typ_dtl.p_vat_type_dtl_id = tbl.p_vat_type_dtl_id;";
             ResultSet rs = st.executeQuery(query);
             pembayaran = new Pembayaran();
             while(rs.next()) {
@@ -104,6 +107,7 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
                 pembayaran.setVat_code(this.vat_code);
                 pembayaran.setP_vat_type_dtl_id(this.p_vat_type_dtl_id);
                 pembayaran.setVat_code(this.vat_code_dtl);
+                pembayaran.setVat_pct(rs.getDouble("vat_pct"));
             }
             this.user_name = user_name;
             pembayaran.setUser_name(this.user_name);
@@ -129,7 +133,6 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
         btnTambahPembayaran = new javax.swing.JButton();
         btnHapus = new javax.swing.JButton();
         btnSubmitLaporanPajak = new javax.swing.JButton();
-        cmbNpwpd = new javax.swing.JComboBox();
         btnLogout = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         btn_first3 = new javax.swing.JButton();
@@ -139,6 +142,7 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
         num_of_pages = new javax.swing.JLabel();
         num_data_pages = new javax.swing.JLabel();
         btn_upload = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         tblPelaporan.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tblPelaporan.setModel(new javax.swing.table.DefaultTableModel(
@@ -271,6 +275,8 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
             }
         });
 
+        jButton1.setText("Selanjutnya");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -287,9 +293,9 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
                         .addComponent(btnSubmitLaporanPajak)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btn_upload, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(cmbNpwpd, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
                         .addComponent(btnLogout))
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
@@ -302,14 +308,14 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(11, 11, 11)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnLogout, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnTambahPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(cmbNpwpd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnHapus, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
                         .addComponent(btnSubmitLaporanPajak, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btn_upload, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btn_upload, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -318,7 +324,7 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
                     .addComponent(num_data_pages))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addContainerGap(66, Short.MAX_VALUE))
         );
 
         pack();
@@ -329,6 +335,14 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
         //Tampilkan Form Input Pembayaran
         FormInputDataPembayaran formInputDataPembayaran = new FormInputDataPembayaran(this.frame, true, pembayaran);
         formInputDataPembayaran.setVisible(true);
+        formInputDataPembayaran.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                sett_pagination.total_data =sett_pagination.getDao().getCount();
+                refreshTable();
+            }
+        });
+
     }//GEN-LAST:event_btnTambahPembayaranActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
@@ -359,11 +373,17 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
         
         if(dialogResult == 0) { // if yes
             //do hapus
+            if(t_vat_setllement_id == 0){
+                int warningButton = JOptionPane.OK_OPTION;
+                int GagalResult = JOptionPane.showConfirmDialog(this,"Data Belum Dipilih","Info",warningButton);
+                return;
+            }
             daoVatSettlement dao = new daoVatSettlement();
             dao.t_cust_account_id_search = this.t_cust_account_id;
             dao.delete(t_vat_setllement_id);
             sett_pagination.total_data = dao.getCount();
             refreshTable();
+            t_vat_setllement_id=0;
         }else {
             //do nothing
         }
@@ -528,7 +548,7 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
     private javax.swing.JButton btn_next;
     private javax.swing.JButton btn_prev;
     private javax.swing.JButton btn_upload;
-    private javax.swing.JComboBox cmbNpwpd;
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel num_data_pages;

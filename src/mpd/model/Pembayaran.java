@@ -29,11 +29,20 @@ public class Pembayaran {
     private Integer p_finance_period_id;
     private String start_period;
     private String end_period;
-    private Integer total_trans_amount;
-    private Integer total_vat_amount;
+    private double total_trans_amount;
+    private double total_vat_amount;
     
     private String noPembayaran;
     private double nilaiPenalty;
+    private double vat_pct;
+
+    public double getVat_pct() {
+        return vat_pct;
+    }
+
+    public void setVat_pct(double vat_pct) {
+        this.vat_pct = vat_pct;
+    }
     
     public Pembayaran() {
         noPembayaran = "";
@@ -105,15 +114,15 @@ public class Pembayaran {
         this.p_finance_period_id = p_finance_period_id;
     }
 
-    public Integer getTotal_trans_amount() {
+    public double getTotal_trans_amount() {
         return total_trans_amount;
     }
 
-    public void setTotal_trans_amount(Integer total_trans_amount) {
+    public void setTotal_trans_amount(double total_trans_amount) {
         this.total_trans_amount = total_trans_amount;
     }
 
-    public Integer getTotal_vat_amount() {
+    public double getTotal_vat_amount() {
         return total_vat_amount;
     }
 
@@ -199,6 +208,10 @@ public class Pembayaran {
 
     public void setUser_name(String user_name) {
         this.user_name = user_name;
+    }
+
+    public void setTotal_vat_amount(double total_vat_amount) {
+        this.total_vat_amount = total_vat_amount;
     }
     
 }

@@ -179,6 +179,12 @@ public class daoVatSettlement{
             return rs.getInt(1);
         } catch (SQLException ex) {
             Logger.getLogger(daoVatSettlement.class.getName()).log(Level.SEVERE, null, ex);
+            try { 
+                connection.rollback();
+            } catch (SQLException rollbackExc) { 
+                Logger.getLogger(daoVatSettlement.class.getName()).log(Level.SEVERE, null, rollbackExc);
+                return 0;
+            }     
             return 0;
         }
     }

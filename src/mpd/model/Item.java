@@ -45,5 +45,13 @@ public class Item {
     public String toString() {
         return description;
     }
-    
+    @Override
+    public boolean equals(Object obj) {
+        Item thisObj = (Item) obj;
+        if(this.id==thisObj.id){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

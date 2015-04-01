@@ -7,6 +7,7 @@ package javaapplication2;
 import java.awt.Toolkit;
 import java.io.File;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -26,6 +27,7 @@ public class UploadDokumenForm extends javax.swing.JDialog {
     private final int t_customer_order_id;
     public String file_location;
     private ViewUploadDokumen vdoc;
+    private Integer t_cust_order_legal_doc_id;
     public File getDocFile() {
         return docFile;
     }
@@ -205,10 +207,32 @@ public class UploadDokumenForm extends javax.swing.JDialog {
             error_label.setText("File Belum dipilih");
             return;
         }
+        if(this.docFile == null && this.t_cust_order_legal_doc_id != 0){
+            try {
+                Item item = (Item) p_legal_doc_type_id.getSelectedItem();
+                Connection connection;
+                connection = DBConnection.openConnection();
+                PreparedStatement statement = connection.prepareStatement("UPDATE t_cust_order_legal_doc\n" +
+                                                                            "SET p_legal_doc_type_id = ?,\n" +
+                                                                            "description = ?\n" +
+                                                                            "WHERE\n" +
+                                                                            "t_cust_order_legal_doc_id = ?");
+                statement.setInt(1, item.getId());
+                statement.setString(2, legal_doc_desc.getText());
+                statement.setInt(3, this.t_cust_order_legal_doc_id);
+                statement.executeUpdate();
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(UploadDokumenForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            vdoc.setDataTable();
+            this.setVisible(false);
+            return;
+        }
         System.out.println(this.frame.user_name);
         UlploadDoc main = new UlploadDoc(this.frame.user_name);
         Item item = (Item) p_legal_doc_type_id.getSelectedItem();
-        main.httpConn(this.t_customer_order_id, item.getId(), legal_doc_desc.getText(),this.file_name_field.getText(),this.file_location );
+        main.httpConn(this.t_customer_order_id, item.getId(), legal_doc_desc.getText(),this.file_name_field.getText(),this.file_location,this.t_cust_order_legal_doc_id);
         this.setVisible(false);
         vdoc.setDataTable();
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -257,6 +281,24 @@ public class UploadDokumenForm extends javax.swing.JDialog {
                 Item docTypeItem = new Item(rs.getInt("p_legal_doc_type_id"),rs.getString("code"));
                 p_legal_doc_type_id.addItem(docTypeItem);
             }
+        } catch (SQLException ex) {
+            Logger.getLogger(UploadDokumenForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void setValues(Integer id){
+        try {
+            Connection con = dbConn.openConnection();
+            PreparedStatement st = con.prepareStatement("select t_cust_order_legal_doc.*,code from t_cust_order_legal_doc \n" +
+                                                        "left join p_legal_doc_type on p_legal_doc_type.p_legal_doc_type_id = t_cust_order_legal_doc.p_legal_doc_type_id\n" +
+                                                        "where t_cust_order_legal_doc_id = ?");
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            rs.next();
+            int legal_doc_type_id = rs.getInt("p_legal_doc_type_id");
+            this.t_cust_order_legal_doc_id = id;
+            p_legal_doc_type_id.setSelectedItem(new Item(rs.getInt("p_legal_doc_type_id"),rs.getString("code")));
+            file_name_field.setText(rs.getString("origin_file_name"));
+            legal_doc_desc.setText(rs.getString("description"));
         } catch (SQLException ex) {
             Logger.getLogger(UploadDokumenForm.class.getName()).log(Level.SEVERE, null, ex);
         }

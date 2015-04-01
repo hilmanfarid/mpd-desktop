@@ -21,6 +21,8 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import mpd.model.Item;
 import mpd.model.Pembayaran;
 import virtualkeyboard.gui.DialogVirtualKeyboardNumber;
@@ -34,6 +36,10 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
     private final NewJFrame frame;
     public DBConnection dbConn;
     public Pembayaran pembayaran;
+    private double percentage;
+    private double pengali_denda;
+    private double totalVatAmount;
+    private double totalDenda;
     /**
      * Creates new form FormInputDataPembayaran
      */
@@ -45,6 +51,22 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
         setLocation((Toolkit.getDefaultToolkit().getScreenSize().width - getWidth() ) / 2 ,(Toolkit.getDefaultToolkit().getScreenSize().height - getHeight()) / 2);
         this.pembayaran = pembayaran;
         initFormFields();
+        txtNilaiOmset.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                hitungPajak();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                hitungPajak();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                 hitungPajak();
+            }
+        });
     }
     
     private void initFormFields() {
@@ -58,16 +80,19 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
             cmbNPWPD.addItem(new Item(pembayaran.getT_cust_account_id(), pembayaran.getNpwd()));
             
             /*add cmbPeriodePajak (mengambil 3 tahun kebelakang)*/
-            String query = "select p_finance_period_id, code, to_char(start_date,'dd-mm-yyyy') as start_period, to_char(end_date,'dd-mm-yyyy') as end_period from p_finance_period\n" +
+            String query = "select *, to_char(start_date,'dd-mm-yyyy') as start_period, to_char(end_date,'dd-mm-yyyy') as end_period from view_finance_period_bayar finance\n" +
                             "where substring(code from char_length(code) - 3)::Integer >= extract(year from sysdate) - 3\n" +
                             "order by start_date desc";
             
             ResultSet rs = st.executeQuery(query);
-            cmbPeriodePajak.addItem(new Item(null,""));
+            Item initPeriod = new Item(null,"");
+            initPeriod.setAdditionalVal("pengali_denda", "0");
+            cmbPeriodePajak.addItem(initPeriod);
             while(rs.next()) {
                 Item periodItem = new Item(rs.getInt("p_finance_period_id"),rs.getString("code"));
                 periodItem.setAdditionalVal("start_period",rs.getString("start_period"));
                 periodItem.setAdditionalVal("end_period",rs.getString("end_period"));
+                periodItem.setAdditionalVal("pengali_denda",rs.getString("pengali_denda"));
                 cmbPeriodePajak.addItem(periodItem);
             }
             
@@ -87,26 +112,35 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
             });
             
             /* cmbAyatPajak */
-            query = "select p_vat_type_dtl_id, vat_code from p_vat_type_dtl\n" +
+            query = "select p_vat_type_dtl_id, vat_code,vat_pct from p_vat_type_dtl\n" +
                     "where p_vat_type_dtl_id = " + pembayaran.getP_vat_type_dtl_id();
             
             rs = st.executeQuery(query);
             while(rs.next()) {
-                cmbAyatPajak.addItem(new Item(rs.getInt("p_vat_type_dtl_id"),rs.getString("vat_code")));
+                Item vat_dtl_item = new Item(rs.getInt("p_vat_type_dtl_id"),rs.getString("vat_code"));
+                vat_dtl_item.setAdditionalVal("vat_pct", rs.getString("vat_pct"));
+                cmbAyatPajak.addItem(vat_dtl_item);
             }
             
             
             /* cmbKelasPajak */
-            query = "select p_vat_type_dtl_cls_id, vat_code from p_vat_type_dtl_cls\n" +
+            query = "select p_vat_type_dtl_cls_id, vat_code,vat_pct from p_vat_type_dtl_cls\n" +
                     "where p_vat_type_dtl_id = " + pembayaran.getP_vat_type_dtl_id();
             
             rs = st.executeQuery(query);
             cmbKelasPajak.addItem(new Item(null,""));
+            int totalKelasPajak =0; 
             while(rs.next()) {
-                cmbKelasPajak.addItem(new Item(rs.getInt("p_vat_type_dtl_cls_id"),rs.getString("vat_code")));
+                Item vat_dtl_cls_item = new Item(rs.getInt("p_vat_type_dtl_cls_id"),rs.getString("vat_code"));
+                vat_dtl_cls_item.setAdditionalVal("vat_pct", rs.getString("vat_pct"));
+                cmbKelasPajak.addItem(vat_dtl_cls_item);
+                totalKelasPajak++;
+            }   
+            if(totalKelasPajak == 0){
+                cmbKelasPajak.setVisible(false);
+                jLabel6.setVisible(false);
             }
-            
-            
+            this.percentage = (float) pembayaran.getVat_pct();
         } catch (SQLException ex) {
             Logger.getLogger(FormInputDataPembayaran.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -162,6 +196,11 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
         cmbNPWPD.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
 
         cmbPeriodePajak.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        cmbPeriodePajak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbPeriodePajakActionPerformed(evt);
+            }
+        });
 
         cmbAyatPajak.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
 
@@ -206,6 +245,7 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
 
         txtNilaiOmset.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtNilaiOmset.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtNilaiOmset.setText("0");
         txtNilaiOmset.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 txtNilaiOmsetMouseClicked(evt);
@@ -214,6 +254,11 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
         txtNilaiOmset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNilaiOmsetActionPerformed(evt);
+            }
+        });
+        txtNilaiOmset.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtNilaiOmsetKeyReleased(evt);
             }
         });
 
@@ -418,7 +463,7 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
 
     private void txtNilaiOmsetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNilaiOmsetActionPerformed
         // TODO add your handling code here:
-        DialogVirtualKeyboardNumber dlg;
+        DialogVirtualKeyboardNumber dlg;  
         dlg = new DialogVirtualKeyboardNumber(this.frame, true, txtNilaiOmset);
         dlg.setPoitToUp(false);
         dlg.setShiftBs(false);
@@ -428,6 +473,7 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
 
     private void txtNilaiOmsetMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtNilaiOmsetMouseClicked
         // TODO add your handling code here:
+        this.txtNilaiOmset.setText("");
         DialogVirtualKeyboardNumber dlg;
         dlg = new DialogVirtualKeyboardNumber(this.frame, true, txtNilaiOmset);
         dlg.setPoitToUp(false);
@@ -488,11 +534,11 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
             pembayaran.setEnd_period( dateMasaPajakUntil.getText() );
             
             //total_trans_amount
-            Integer total_trans_amount = Integer.parseInt(txtNilaiOmset.getText());
+            double total_trans_amount = Double.valueOf(txtNilaiOmset.getText());
             pembayaran.setTotal_trans_amount(total_trans_amount);
             
             //total_vat_amount
-            Integer total_vat_amount = Integer.parseInt(txtNilaiHarusDibayar.getText());
+            double total_vat_amount = this.totalDenda+this.totalVatAmount;
             pembayaran.setTotal_vat_amount(total_vat_amount);
             
             //p_vat_type_dtl_id
@@ -514,6 +560,7 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
                     txtNomorPembayaran.setText(pembayaran.getNoPembayaran());
                     txtNilaiDenda.setText(String.valueOf(pembayaran.getNilaiPenalty()));
                     JOptionPane.showMessageDialog(this.frame, "Data telah tersimpan. Nomor Pembayaran : "+ pembayaran.getNoPembayaran() +". Silahkan Cetak Nomor Pembayaran");
+                    
                 }
                                 
             } catch (SQLException ex) {
@@ -558,6 +605,20 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
         dlg.setShiftBs(false);
         dlg.setLocaleL(Locale.ENGLISH);
     }//GEN-LAST:event_txtTotalHarusBayarMouseClicked
+
+    private void cmbPeriodePajakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbPeriodePajakActionPerformed
+        // TODO add your handling code here:
+        Item item = (Item) cmbPeriodePajak.getSelectedItem();
+        this.pengali_denda = Double.valueOf(item.getAdditionalVal("pengali_denda"));
+        if(this.pengali_denda < 0){
+            this.pengali_denda = 0;
+        }
+    }//GEN-LAST:event_cmbPeriodePajakActionPerformed
+    
+    private void txtNilaiOmsetKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNilaiOmsetKeyReleased
+        // TODO add your handling code here:
+        this.hitungPajak();
+    }//GEN-LAST:event_txtNilaiOmsetKeyReleased
     
     private boolean formIsValid() {
         
@@ -585,12 +646,12 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
         }
         
         
-        int total_trans_amount = Integer.parseInt(txtNilaiOmset.getText());
+        double total_trans_amount = this.totalVatAmount + this.totalDenda;
         if(total_trans_amount == 0) {
             message += "- Nilai Omset Belum Diisi \n";
         }
         
-        int total_vat_amount = Integer.parseInt(txtNilaiHarusDibayar.getText());
+        double total_vat_amount = this.totalVatAmount;
         if(total_vat_amount == 0 ) {
             message += "- Nilai Pajak Yang Harus Dibayar Belum Diisi\n";
         }
@@ -641,4 +702,21 @@ public class FormInputDataPembayaran extends javax.swing.JDialog {
     private javax.swing.JTextField txtNomorPembayaran;
     private javax.swing.JTextField txtTotalHarusBayar;
     // End of variables declaration//GEN-END:variables
+    private void hitungPajak(){
+        double persen;
+        double nilai;
+        double denda;
+        if(this.txtNilaiOmset.getText()=="" || this.txtNilaiOmset.getText().isEmpty()){
+            nilai=0;
+        }else{
+            nilai=Double.valueOf(this.txtNilaiOmset.getText());
+        }
+        persen = this.percentage;
+        denda = this.pengali_denda;
+        this.totalVatAmount = (double)nilai*((double)persen/100);
+        this.totalDenda = (double)denda * (double)totalVatAmount;
+        this.txtNilaiDenda.setText(String.format("%1$,.2f", totalDenda));
+        this.txtNilaiHarusDibayar.setText(String.format("%1$,.2f", totalVatAmount));
+        this.txtTotalHarusBayar.setText(String.format("%1$,.2f", totalVatAmount+totalDenda));
+    }
 }
