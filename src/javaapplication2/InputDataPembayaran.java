@@ -100,6 +100,14 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
                 this.p_vat_type_dtl_id = rs.getInt("p_vat_type_dtl_id");
                 this.vat_code_dtl = rs.getString("vat_code_dtl");
                 
+                this.frame.t_cust_account_id = rs.getInt("t_cust_account_id");
+                this.frame.npwd = rs.getString("npwd");
+                this.frame.company_name = rs.getString("company_name");
+                this.frame.p_vat_type_id = rs.getInt("p_vat_type_id");
+                this.frame.vat_code = rs.getString("vat_code");
+                this.frame.p_vat_type_dtl_id = rs.getInt("p_vat_type_dtl_id");
+                this.frame.vat_code_dtl = rs.getString("vat_code_dtl");
+
                 pembayaran.setT_cust_account_id(this.t_cust_account_id);
                 pembayaran.setNpwd(this.npwd);
                 pembayaran.setCompany_name(this.company_name);
@@ -110,12 +118,15 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
                 pembayaran.setVat_pct(rs.getDouble("vat_pct"));
             }
             this.user_name = user_name;
+            this.frame.user_name = user_name;
             pembayaran.setUser_name(this.user_name);
             
             con.close();
             st.close();
         } catch (SQLException ex) {
             Logger.getLogger(InputDataPembayaran.class.getName()).log(Level.SEVERE, null, ex);
+            int dialogButton = JOptionPane.CLOSED_OPTION;
+            int dialogResult = JOptionPane.showConfirmDialog(this,"Koneksi Gagal!\n Menutup Aplikasi......","Info",dialogButton);
         }
             
     }
@@ -276,6 +287,11 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
         });
 
         jButton1.setText("Selanjutnya");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -310,9 +326,9 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
                 .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnLogout, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnHapus, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnTambahPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnHapus, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
                         .addComponent(btnSubmitLaporanPajak, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btn_upload, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -324,7 +340,7 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
                     .addComponent(num_data_pages))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(66, Short.MAX_VALUE))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
 
         pack();
@@ -531,6 +547,17 @@ public class InputDataPembayaran extends javax.swing.JInternalFrame {
     private void tblPelaporanMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPelaporanMouseEntered
         // TODO add your handling code here:
     }//GEN-LAST:event_tblPelaporanMouseEntered
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        ViewCustAccTrans view_cust_trans = new ViewCustAccTrans(frame,this,this.t_customer_order_id);
+        view_cust_trans.pack();
+            
+        frame.getContentPane().add(view_cust_trans);
+        frame.setContentPane(view_cust_trans);
+        view_cust_trans.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void tblPelaporanMouseClicked(java.awt.event.MouseEvent evt) {                                          
         // TODO add your handling code here:

@@ -54,9 +54,9 @@
               <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="btnLogout" alignment="1" min="-2" pref="33" max="-2" attributes="0"/>
+                  <Component id="btnHapus" alignment="0" pref="36" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnTambahPembayaran" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
-                      <Component id="btnHapus" alignment="0" pref="36" max="32767" attributes="0"/>
                       <Component id="btnSubmitLaporanPajak" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                   </Group>
                   <Component id="btn_upload" pref="36" max="32767" attributes="0"/>
@@ -71,7 +71,7 @@
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="66" max="32767" attributes="0"/>
+              <EmptySpace pref="78" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -319,6 +319,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Selanjutnya"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

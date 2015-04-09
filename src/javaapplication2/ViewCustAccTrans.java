@@ -9,63 +9,74 @@ import java.awt.event.WindowEvent;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import mpd.dao.daoCustLegalDoc;
+import mpd.dao.daoCustAccTrans;
 import mpd.lib.DeleteDoc;
-import mpd.lib.PaginationCustLegalDoc;
-import mpd.model.CustLegalDoc;
+import mpd.lib.PaginationCustAccTrans;
+import mpd.lib.PaginationCustAccTrans;
+import mpd.model.CustAccTrans;
 
 /**
  *
  * @author Admin
  */
-public final class ViewCustTrans extends javax.swing.JInternalFrame {
+public final class ViewCustAccTrans extends javax.swing.JInternalFrame {
     private final NewJFrame frame;
     private final InputDataPembayaran inDataPem;
     public final int t_customer_order_id;
-    private PaginationCustLegalDoc cust_doc_pagination;
-    private int t_cust_order_legal_doc_id;
+    private PaginationCustAccTrans cust_acc_trans_pagination;
+    private int t_cust_acc_dtl_trans_id;
     /**
      * Creates new form NewJInternalFrame
      */
-    public ViewCustTrans(NewJFrame frame,InputDataPembayaran inDataPem,int t_customer_order_id) {
+    public ViewCustAccTrans(NewJFrame frame,InputDataPembayaran inDataPem,int t_customer_order_id) {
         this.frame = frame;
         this.inDataPem = inDataPem;
         this.t_customer_order_id = t_customer_order_id;
         initComponents();
-        this.cust_doc_pagination=null;
-        daoCustLegalDoc cust_doc = new daoCustLegalDoc();
-        cust_doc.t_customer_order_id_search = this.t_customer_order_id;
-        cust_doc_pagination = new PaginationCustLegalDoc(cust_doc);
-        cust_doc.size_per_page=10;
+        this.cust_acc_trans_pagination=null;
+        daoCustAccTrans cust_trans = new daoCustAccTrans();
+        cust_trans.t_customer_order_id = this.t_customer_order_id;
+        cust_trans.t_cust_account_id = inDataPem.t_cust_account_id;
+        /*String selectquery = "select to_char(trans_date,'yyyy-mm-dd') as trans_date,t_cust_acc_dtl_trans_id, t_cust_account_id, bill_no, service_desc, service_charge, vat_charge, tbl.description,p_vat_type_dtl_id,p_finance_period_id\n" +
+        "                      from sikp.f_get_cust_acc_dtl_trans("+this.inDataPem.t_cust_account_id+",null)AS tbl (t_cust_acc_dtl_trans_id) \n" +
+        "                      left join p_finance_period on p_finance_period.start_date <= trans_date and p_finance_period.end_date >= trans_date \n"+
+        "                      where p_vat_type_dtl_id = ? and trans_date between ? and ? ";*/
+        cust_trans.p_vat_type_dtl_id_search = this.inDataPem.p_vat_type_dtl_id;
+        cust_acc_trans_pagination = new PaginationCustAccTrans(cust_trans);
+        cust_trans.size_per_page=10;
         this.setDataTable();
         CustLegalTable.removeColumn(CustLegalTable.getColumnModel().getColumn(0));
     }
     public void setDataTable(){
-        daoCustLegalDoc dao =cust_doc_pagination.getDao();
+        daoCustAccTrans dao =cust_acc_trans_pagination.getDao();
         DefaultTableModel dtm = (DefaultTableModel) this.CustLegalTable.getModel();
         if (dtm.getRowCount() > 0) {
             for (int i = dtm.getRowCount() - 1; i > -1; i--) {
                 dtm.removeRow(i);
             }
         }
-        List<CustLegalDoc> res = dao.getALL(1,dao.size_per_page, "t_cust_order_legal_doc_id", "DESC");
+        List<CustAccTrans> res = dao.getALL(1,dao.size_per_page, "t_cust_acc_dtl_trans_id", "DESC");
         int total_row= dao.size_per_page;
         int i_row=1;
-        for (CustLegalDoc temp : res) {
+        for (CustAccTrans temp : res) {
                 Object[] row = new Object[]{
-                    temp.getT_cust_order_legal_doc_id(),
-                    temp.getDoc_code(),
-                    temp.getFile_name(),
-                    temp.getDescription()
+                    temp.getT_cust_acc_dtl_trans_id(),
+                    temp.getTrans_date(),
+                    temp.getBill_no(),
+                    temp.getDescription(),
+                    temp.getService_charge(),
+                    temp.getVat_charge()
                 };
                 System.out.println(row);
                 dtm.addRow(row);
                 i_row++;
 	}
         while(i_row <= dao.size_per_page){
-            dtm.addRow(new Object[]{null, null, null, null});
+            dtm.addRow(new Object[]{null, null, null, null, null, null});
             i_row++;
         }
+        num_of_pages.setText("Halaman "+cust_acc_trans_pagination.getCurrentPage()+" dari "+(int)Math.ceil((float)cust_acc_trans_pagination.total_data/cust_acc_trans_pagination.getDao().size_per_page));
+        num_data_pages.setText("Menampilkan "+(((cust_acc_trans_pagination.getCurrentPage()-1)*cust_acc_trans_pagination.getDao().size_per_page)+1)+" s.d "+((int)res.size()+(cust_acc_trans_pagination.getDao().size_per_page*(cust_acc_trans_pagination.getCurrentPage()-1)))+" dari "+cust_acc_trans_pagination.total_data+" Data");
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -94,23 +105,23 @@ public final class ViewCustTrans extends javax.swing.JInternalFrame {
         CustLegalTable.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         CustLegalTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "t_cust_order_legal_doc_id", "Tipe Dokumen", "Nama File", "Deskripsi"
+                "t_cust_acc_dtl_trans_id", "Tanggal Transaksi", "No Faktur", "Deskripsi", "Nilai Transaksi", "Nilai Pajak"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -142,7 +153,7 @@ public final class ViewCustTrans extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton1.setText("Tambah Dokumen Pendukung");
+        jButton1.setText("Tambah Transaksi");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -217,6 +228,11 @@ public final class ViewCustTrans extends javax.swing.JInternalFrame {
         });
 
         jButton4.setText("Upload Excel");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -261,7 +277,7 @@ public final class ViewCustTrans extends javax.swing.JInternalFrame {
                     .addComponent(num_data_pages))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addContainerGap(70, Short.MAX_VALUE))
         );
 
         pack();
@@ -277,12 +293,12 @@ public final class ViewCustTrans extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        UploadDokumenForm upForm = new UploadDokumenForm(this.frame,this, true);
-        upForm.setVisible(true);
-        upForm.addWindowListener(new WindowAdapter() {
+        CustAccTransForm cust_form = new CustAccTransForm(this.frame,this, true);
+        cust_form.setVisible(true);
+        cust_form.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
-               t_cust_order_legal_doc_id = 0;
+               t_cust_acc_dtl_trans_id = 0;
             }
         });
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -290,56 +306,60 @@ public final class ViewCustTrans extends javax.swing.JInternalFrame {
     private void btn_first3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_first3ActionPerformed
         // TODO add your handling code here:
         DefaultTableModel dtm = (DefaultTableModel) this.CustLegalTable.getModel();
-        List<CustLegalDoc> res = cust_doc_pagination.firstPage();
+        List<CustAccTrans> res = cust_acc_trans_pagination.firstPage();
         if(res == null){
             return;
         }
-        int total_row= cust_doc_pagination.getDao().size_per_page;
+        int total_row= cust_acc_trans_pagination.getDao().size_per_page;
         int i_row=1;
         if (dtm.getRowCount() > 0) {
             for (int i = dtm.getRowCount() - 1; i > -1; i--) {
                 dtm.removeRow(i);
             }
         }
-        for (CustLegalDoc temp : res) {
+        for (CustAccTrans temp : res) {
             Object[] row = new Object[]{
-                temp.getT_cust_order_legal_doc_id(),
-                temp.getDoc_code(),
-                temp.getFile_name(),
-                temp.getDescription()
+                temp.getT_cust_acc_dtl_trans_id(),
+                temp.getTrans_date(),
+                temp.getBill_no(),
+                temp.getDescription(),
+                temp.getService_charge(),
+                temp.getVat_charge()
             };
             System.out.println(row);
             dtm.addRow(row);
             i_row++;
         }
         while(i_row <= total_row){
-            dtm.addRow(new Object[]{null, null, null, null, null, null, null, null, null, null});
+            dtm.addRow(new Object[]{null, null, null, null, null, null});
             i_row++;
         }
-        num_of_pages.setText("Halaman "+cust_doc_pagination.getCurrentPage()+" dari "+(int)Math.ceil((float)cust_doc_pagination.total_data/cust_doc_pagination.getDao().size_per_page));
-        num_data_pages.setText("Menampilkan "+(((cust_doc_pagination.getCurrentPage()-1)*cust_doc_pagination.getDao().size_per_page)+1)+" s.d "+((int)res.size()+(cust_doc_pagination.getDao().size_per_page*(cust_doc_pagination.getCurrentPage()-1)))+" dari "+cust_doc_pagination.total_data+" Data");
+        num_of_pages.setText("Halaman "+cust_acc_trans_pagination.getCurrentPage()+" dari "+(int)Math.ceil((float)cust_acc_trans_pagination.total_data/cust_acc_trans_pagination.getDao().size_per_page));
+        num_data_pages.setText("Menampilkan "+(((cust_acc_trans_pagination.getCurrentPage()-1)*cust_acc_trans_pagination.getDao().size_per_page)+1)+" s.d "+((int)res.size()+(cust_acc_trans_pagination.getDao().size_per_page*(cust_acc_trans_pagination.getCurrentPage()-1)))+" dari "+cust_acc_trans_pagination.total_data+" Data");
     }//GEN-LAST:event_btn_first3ActionPerformed
 
     private void btn_prevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_prevActionPerformed
         // TODO add your handling code here:
         DefaultTableModel dtm = (DefaultTableModel) this.CustLegalTable.getModel();
-        List<CustLegalDoc> res = cust_doc_pagination.prevPage();
+        List<CustAccTrans> res = cust_acc_trans_pagination.prevPage();
         if(res == null){
             return;
         }
-        int total_row= cust_doc_pagination.getDao().size_per_page;
+        int total_row= cust_acc_trans_pagination.getDao().size_per_page;
         int i_row=1;
         if (dtm.getRowCount() > 0) {
             for (int i = dtm.getRowCount() - 1; i > -1; i--) {
                 dtm.removeRow(i);
             }
         }
-        for (CustLegalDoc temp : res) {
+        for (CustAccTrans temp : res) {
             Object[] row = new Object[]{
-                temp.getT_cust_order_legal_doc_id(),
-                temp.getDoc_code(),
-                temp.getFile_name(),
-                temp.getDescription()
+                temp.getT_cust_acc_dtl_trans_id(),
+                temp.getTrans_date(),
+                temp.getBill_no(),
+                temp.getDescription(),
+                temp.getService_charge(),
+                temp.getVat_charge()
             };
             System.out.println(row);
             dtm.addRow(row);
@@ -349,18 +369,18 @@ public final class ViewCustTrans extends javax.swing.JInternalFrame {
             dtm.addRow(new Object[]{null, null, null, null, null, null, null, null, null, null});
             i_row++;
         }
-        num_of_pages.setText("Halaman "+cust_doc_pagination.getCurrentPage()+" dari "+(int)Math.ceil((float)cust_doc_pagination.total_data/cust_doc_pagination.getDao().size_per_page));
-        num_data_pages.setText("Menampilkan "+(((cust_doc_pagination.getCurrentPage()-1)*cust_doc_pagination.getDao().size_per_page)+1)+" s.d "+((int)res.size()+(cust_doc_pagination.getDao().size_per_page*(cust_doc_pagination.getCurrentPage()-1)))+" dari "+cust_doc_pagination.total_data+" Data");
+        num_of_pages.setText("Halaman "+cust_acc_trans_pagination.getCurrentPage()+" dari "+(int)Math.ceil((float)cust_acc_trans_pagination.total_data/cust_acc_trans_pagination.getDao().size_per_page));
+        num_data_pages.setText("Menampilkan "+(((cust_acc_trans_pagination.getCurrentPage()-1)*cust_acc_trans_pagination.getDao().size_per_page)+1)+" s.d "+((int)res.size()+(cust_acc_trans_pagination.getDao().size_per_page*(cust_acc_trans_pagination.getCurrentPage()-1)))+" dari "+cust_acc_trans_pagination.total_data+" Data");
     }//GEN-LAST:event_btn_prevActionPerformed
 
     private void btn_nextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nextActionPerformed
         // TODO add your handling code here:
         DefaultTableModel dtm = (DefaultTableModel) this.CustLegalTable.getModel();
-        List<CustLegalDoc> res = cust_doc_pagination.nextPage();
+        List<CustAccTrans> res = cust_acc_trans_pagination.nextPage();
         if(res == null){
             return;
         }
-        int total_row= cust_doc_pagination.getDao().size_per_page;
+        int total_row= cust_acc_trans_pagination.getDao().size_per_page;
         int i_row=1;
         int data_till_now = dtm.getRowCount();
         if (dtm.getRowCount() > 0) {
@@ -368,33 +388,35 @@ public final class ViewCustTrans extends javax.swing.JInternalFrame {
                 dtm.removeRow(i);
             }
         }
-        for (CustLegalDoc temp : res) {
+        for (CustAccTrans temp : res) {
             Object[] row = new Object[]{
-                temp.getT_cust_order_legal_doc_id(),
-                temp.getDoc_code(),
-                temp.getFile_name(),
-                temp.getDescription()
+                temp.getT_cust_acc_dtl_trans_id(),
+                temp.getTrans_date(),
+                temp.getBill_no(),
+                temp.getDescription(),
+                temp.getService_charge(),
+                temp.getVat_charge()
             };
             System.out.println(row);
             dtm.addRow(row);
             i_row++;
         }
         while(i_row <= total_row){
-            dtm.addRow(new Object[]{null, null, null, null, null, null, null, null, null, null});
+            dtm.addRow(new Object[]{null, null, null, null, null, null});
             i_row++;
         }
-        num_of_pages.setText("Halaman "+cust_doc_pagination.getCurrentPage()+" dari "+(int)Math.ceil((float)cust_doc_pagination.total_data/cust_doc_pagination.getDao().size_per_page));
-        num_data_pages.setText("Menampilkan "+(((cust_doc_pagination.getCurrentPage()-1)*cust_doc_pagination.getDao().size_per_page)+1)+" s.d "+((int)res.size()+(cust_doc_pagination.getDao().size_per_page*(cust_doc_pagination.getCurrentPage()-1)))+" dari "+cust_doc_pagination.total_data+" Data");
+        num_of_pages.setText("Halaman "+cust_acc_trans_pagination.getCurrentPage()+" dari "+(int)Math.ceil((float)cust_acc_trans_pagination.total_data/cust_acc_trans_pagination.getDao().size_per_page));
+        num_data_pages.setText("Menampilkan "+(((cust_acc_trans_pagination.getCurrentPage()-1)*cust_acc_trans_pagination.getDao().size_per_page)+1)+" s.d "+((int)res.size()+(cust_acc_trans_pagination.getDao().size_per_page*(cust_acc_trans_pagination.getCurrentPage()-1)))+" dari "+cust_acc_trans_pagination.total_data+" Data");
     }//GEN-LAST:event_btn_nextActionPerformed
 
     private void btn_lastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_lastActionPerformed
         // TODO add your handling code here:
         DefaultTableModel dtm = (DefaultTableModel) this.CustLegalTable.getModel();
-        List<CustLegalDoc> res = cust_doc_pagination.lastPage();
+        List<CustAccTrans> res = cust_acc_trans_pagination.lastPage();
         if(res == null){
             return;
         }
-        int total_row= cust_doc_pagination.getDao().size_per_page;
+        int total_row= cust_acc_trans_pagination.getDao().size_per_page;
         int i_row=1;
         int data_till_now = dtm.getRowCount();
         if (dtm.getRowCount() > 0) {
@@ -402,34 +424,36 @@ public final class ViewCustTrans extends javax.swing.JInternalFrame {
                 dtm.removeRow(i);
             }
         }
-        for (CustLegalDoc temp : res) {
+        for (CustAccTrans temp : res) {
             Object[] row = new Object[]{
-                temp.getT_cust_order_legal_doc_id(),
-                temp.getDoc_code(),
-                temp.getFile_name(),
-                temp.getDescription()
+                temp.getT_cust_acc_dtl_trans_id(),
+                temp.getTrans_date(),
+                temp.getBill_no(),
+                temp.getDescription(),
+                temp.getService_charge(),
+                temp.getVat_charge()
             };
             System.out.println(row);
             dtm.addRow(row);
             i_row++;
         }
         while(i_row <= total_row){
-            dtm.addRow(new Object[]{null, null, null, null, null, null, null, null, null, null});
+            dtm.addRow(new Object[]{null, null, null, null, null, null});
             i_row++;
         }
-        num_of_pages.setText("Halaman "+cust_doc_pagination.getCurrentPage()+" dari "+(int)Math.ceil((float)cust_doc_pagination.total_data/cust_doc_pagination.getDao().size_per_page));
-        num_data_pages.setText("Menampilkan "+(((cust_doc_pagination.getCurrentPage()-1)*cust_doc_pagination.getDao().size_per_page)+1)+" s.d "+((int)res.size()+(cust_doc_pagination.getDao().size_per_page*(cust_doc_pagination.getCurrentPage()-1)))+" dari "+cust_doc_pagination.total_data+" Data");
+        num_of_pages.setText("Halaman "+cust_acc_trans_pagination.getCurrentPage()+" dari "+(int)Math.ceil((float)cust_acc_trans_pagination.total_data/cust_acc_trans_pagination.getDao().size_per_page));
+        num_data_pages.setText("Menampilkan "+(((cust_acc_trans_pagination.getCurrentPage()-1)*cust_acc_trans_pagination.getDao().size_per_page)+1)+" s.d "+((int)res.size()+(cust_acc_trans_pagination.getDao().size_per_page*(cust_acc_trans_pagination.getCurrentPage()-1)))+" dari "+cust_acc_trans_pagination.total_data+" Data");
     }//GEN-LAST:event_btn_lastActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        UploadDokumenForm upForm = new UploadDokumenForm(this.frame,this, true);
-        upForm.setValues(this.t_cust_order_legal_doc_id);
-        upForm.setVisible(true);
-        upForm.addWindowListener(new WindowAdapter() {
+        CustAccTransForm cust_form = new CustAccTransForm(this.frame,this, true);
+        cust_form.setValues(this.t_cust_acc_dtl_trans_id);
+        cust_form.setVisible(true);
+        cust_form.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
-               t_cust_order_legal_doc_id = 0;
+               t_cust_acc_dtl_trans_id = 0;
             }
         });
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -437,20 +461,32 @@ public final class ViewCustTrans extends javax.swing.JInternalFrame {
     private void CustLegalTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CustLegalTableMouseClicked
         // TODO add your handling code here:
         int idx = CustLegalTable.getSelectedRow();
-        this.t_cust_order_legal_doc_id  = (int) CustLegalTable.getModel().getValueAt(CustLegalTable.getSelectedRow(), 0);
+        this.t_cust_acc_dtl_trans_id  = (int) CustLegalTable.getModel().getValueAt(CustLegalTable.getSelectedRow(), 0);
     }//GEN-LAST:event_CustLegalTableMouseClicked
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        if(this.t_cust_order_legal_doc_id==0){
+        if(this.t_cust_acc_dtl_trans_id==0){
             int dialogButton = JOptionPane.CLOSED_OPTION;
             int dialogResult = JOptionPane.showConfirmDialog(this,"Data Belum Dipilih!","Info",dialogButton);
             return;
         }
         DeleteDoc main = new DeleteDoc(this.frame.user_name);
-        main.httpConn(this.t_cust_order_legal_doc_id);
+        main.httpConn(this.t_cust_acc_dtl_trans_id);
         this.setDataTable();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        UploadExcelForm upForm = new UploadExcelForm(this.frame,this, true);
+        upForm.setVisible(true);
+        upForm.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+               t_cust_acc_dtl_trans_id = 0;
+            }
+        });
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable CustLegalTable;

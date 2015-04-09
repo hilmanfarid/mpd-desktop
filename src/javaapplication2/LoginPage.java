@@ -194,6 +194,10 @@ public class LoginPage extends javax.swing.JPanel {
         String user_password = "";
         try {
             Connection con = dbConn.openConnection();
+            if(con == null){
+                JOptionPane.showMessageDialog(null, "Koneksi Gagal");
+                return;
+            }
             Statement st = con.createStatement();
             String query = "SELECT p_app_user_id as user_id,app_user_name as user_name,user_pwd as user_password,email_address as user_email,full_name as user_realname,p_user_status_id as user_status, is_employee FROM p_app_user WHERE app_user_name = '" + username + "'";
             ResultSet rs = st.executeQuery(query);
@@ -230,7 +234,9 @@ public class LoginPage extends javax.swing.JPanel {
             
             
         } catch (SQLException | NoSuchAlgorithmException ex) {
+            JOptionPane.showMessageDialog(null, "Koneksi Gagal");
             Logger.getLogger(LoginPage.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
         
         if(usernameValid) { //jika valid
