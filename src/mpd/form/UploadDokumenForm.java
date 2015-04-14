@@ -1,8 +1,10 @@
+package mpd.form;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package javaapplication2;
+
 
 import java.awt.Toolkit;
 import java.io.File;
@@ -13,6 +15,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javaapplication2.DBConnection;
+import javaapplication2.NewJFrame;
+import javaapplication2.UploadWindow;
+import javaapplication2.ViewUploadDokumen;
 import mpd.lib.UlploadDoc;
 import mpd.model.Item;
 
@@ -197,7 +203,8 @@ public class UploadDokumenForm extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        UploadWindow upwin = new UploadWindow(this, true);
+        UploadWindow upwin;
+        upwin = new UploadWindow(this, true);
         upwin.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 

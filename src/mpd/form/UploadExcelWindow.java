@@ -1,10 +1,13 @@
+package mpd.form;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package javaapplication2;
+
 
 import java.io.File;
+import javaapplication2.NewJFrame;
 import javax.swing.SwingUtilities;
 
 /**

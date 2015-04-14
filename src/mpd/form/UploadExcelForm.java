@@ -1,8 +1,10 @@
+package mpd.form;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package javaapplication2;
+
 
 import java.awt.Toolkit;
 import java.io.File;
@@ -13,6 +15,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javaapplication2.DBConnection;
+import javaapplication2.NewJFrame;
+import javaapplication2.ViewCustAccTrans;
 import mpd.lib.UploadExcel;
 import mpd.model.Item;
 
