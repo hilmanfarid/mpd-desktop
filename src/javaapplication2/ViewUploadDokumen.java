@@ -10,6 +10,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import mpd.dao.daoCustLegalDoc;
+import mpd.form.UploadDokumenForm;
 import mpd.lib.DeleteDoc;
 import mpd.lib.PaginationCustLegalDoc;
 import mpd.model.CustLegalDoc;

@@ -22,10 +22,10 @@ import javax.swing.text.JTextComponent;
  * Dialog for VirtualKeyboard
  * @author Vladimir Petrenko
  */
-public class DialogVirtualKeyboardReal extends javax.swing.JDialog {
+public class DialogVirtualKeyboardCalc extends javax.swing.JDialog {
 
     /** Creates new form DialogVirtualKeyboard */
-    public DialogVirtualKeyboardReal(java.awt.Frame parent, boolean modal) {
+    public DialogVirtualKeyboardCalc(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         this.setUndecorated(true);
         initComponents();
@@ -33,15 +33,15 @@ public class DialogVirtualKeyboardReal extends javax.swing.JDialog {
     }
 
     /** Creates new form DialogVirtualKeyboard */
-    public DialogVirtualKeyboardReal(java.awt.Frame parent, boolean modal, JTextComponent textComponent) {
+    public DialogVirtualKeyboardCalc(java.awt.Frame parent, boolean modal, JTextComponent textComponent) {
         super(parent, modal);
         this.setUndecorated(true);
         initComponents();
 
         panelVirtualKeyboard.setWindow(this);
-        int neutral_pos = (int) textComponent.getLocationOnScreen().getX()*-1;
+
         this.setTextComponent(textComponent);
-        this.show(textComponent,neutral_pos+((parent.getWidth()-this.getWidth())/2) , textComponent.getHeight());
+        this.show(textComponent, 0, textComponent.getHeight());
     }
 
     public boolean isPoitToUp() {
@@ -173,7 +173,7 @@ public class DialogVirtualKeyboardReal extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panelVirtualKeyboard = new virtualkeyboard.gui.PanelVirtualKeyboardReal();
+        panelVirtualKeyboard = new virtualkeyboard.gui.PanelVirtualKeyboardCalc();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
@@ -181,15 +181,6 @@ public class DialogVirtualKeyboardReal extends javax.swing.JDialog {
             }
             public void windowLostFocus(java.awt.event.WindowEvent evt) {
                 formWindowLostFocus(evt);
-            }
-        });
-
-        panelVirtualKeyboard.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelVirtualKeyboard.setAlignmentX(0.0F);
-        panelVirtualKeyboard.setAlignmentY(0.0F);
-        panelVirtualKeyboard.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                panelVirtualKeyboardFocusLost(evt);
             }
         });
         getContentPane().add(panelVirtualKeyboard, java.awt.BorderLayout.CENTER);
@@ -202,15 +193,7 @@ public class DialogVirtualKeyboardReal extends javax.swing.JDialog {
             this.setVisible(false);
             this.dispose();
         }
-        this.setVisible(false);
-        this.dispose();
     }//GEN-LAST:event_formWindowLostFocus
-
-    private void panelVirtualKeyboardFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_panelVirtualKeyboardFocusLost
-        // TODO add your handling code here:
-        this.setVisible(false);
-        this.dispose();
-    }//GEN-LAST:event_panelVirtualKeyboardFocusLost
 
     /**
     * @param args the command line arguments
@@ -218,7 +201,7 @@ public class DialogVirtualKeyboardReal extends javax.swing.JDialog {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                DialogVirtualKeyboardReal dialog = new DialogVirtualKeyboardReal(new javax.swing.JFrame(), true);
+                DialogVirtualKeyboardCalc dialog = new DialogVirtualKeyboardCalc(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     public void windowClosing(java.awt.event.WindowEvent e) {
                         System.exit(0);
@@ -230,6 +213,6 @@ public class DialogVirtualKeyboardReal extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private virtualkeyboard.gui.PanelVirtualKeyboardReal panelVirtualKeyboard;
+    private virtualkeyboard.gui.PanelVirtualKeyboardCalc panelVirtualKeyboard;
     // End of variables declaration//GEN-END:variables
 }

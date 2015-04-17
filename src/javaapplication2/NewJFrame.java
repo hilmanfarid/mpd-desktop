@@ -16,14 +16,14 @@ import javax.swing.JPanel;
  * @author Admin
  */
 public class NewJFrame extends javax.swing.JFrame {
-    String npwd;
-    int t_cust_account_id;
-    String company_name;
-    int p_vat_type_id;
-    String vat_code;
-    int p_vat_type_dtl_id;
+    public String npwd;
+    public int t_cust_account_id;
+    public String company_name;
+    public int p_vat_type_id;
+    public String vat_code;
+    public int p_vat_type_dtl_id;
     public String vat_code_dtl;
-    String user_name;
+    public String user_name;
 
     /**
      * Creates new form NewJFrame

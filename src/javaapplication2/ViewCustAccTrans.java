@@ -10,6 +10,8 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import mpd.dao.daoCustAccTrans;
+import mpd.form.CustAccTransForm;
+import mpd.form.UploadExcelForm;
 import mpd.lib.DeleteDoc;
 import mpd.lib.PaginationCustAccTrans;
 import mpd.lib.PaginationCustAccTrans;
@@ -42,6 +44,7 @@ public final class ViewCustAccTrans extends javax.swing.JInternalFrame {
         "                      left join p_finance_period on p_finance_period.start_date <= trans_date and p_finance_period.end_date >= trans_date \n"+
         "                      where p_vat_type_dtl_id = ? and trans_date between ? and ? ";*/
         cust_trans.p_vat_type_dtl_id_search = this.inDataPem.p_vat_type_dtl_id;
+        cust_trans.user_name = this.frame.user_name;
         cust_acc_trans_pagination = new PaginationCustAccTrans(cust_trans);
         cust_trans.size_per_page=10;
         this.setDataTable();
@@ -55,7 +58,7 @@ public final class ViewCustAccTrans extends javax.swing.JInternalFrame {
                 dtm.removeRow(i);
             }
         }
-        List<CustAccTrans> res = dao.getALL(1,dao.size_per_page, "t_cust_acc_dtl_trans_id", "DESC");
+        List<CustAccTrans> res = dao.getALL(cust_acc_trans_pagination.getCurrentPage(),dao.size_per_page, "t_cust_acc_dtl_trans_id", "DESC");
         int total_row= dao.size_per_page;
         int i_row=1;
         for (CustAccTrans temp : res) {
@@ -277,7 +280,7 @@ public final class ViewCustAccTrans extends javax.swing.JInternalFrame {
                     .addComponent(num_data_pages))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(70, Short.MAX_VALUE))
+                .addContainerGap(82, Short.MAX_VALUE))
         );
 
         pack();
@@ -293,7 +296,7 @@ public final class ViewCustAccTrans extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        CustAccTransForm cust_form = new CustAccTransForm(this.frame,this, true);
+        CustAccTransForm cust_form = new CustAccTransForm(this.frame,this,true,"create");
         cust_form.setVisible(true);
         cust_form.addWindowListener(new WindowAdapter() {
             @Override
@@ -447,7 +450,7 @@ public final class ViewCustAccTrans extends javax.swing.JInternalFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        CustAccTransForm cust_form = new CustAccTransForm(this.frame,this, true);
+        CustAccTransForm cust_form = new CustAccTransForm(this.frame,this, true,"update");
         cust_form.setValues(this.t_cust_acc_dtl_trans_id);
         cust_form.setVisible(true);
         cust_form.addWindowListener(new WindowAdapter() {
@@ -466,14 +469,25 @@ public final class ViewCustAccTrans extends javax.swing.JInternalFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        if(this.t_cust_acc_dtl_trans_id==0){
-            int dialogButton = JOptionPane.CLOSED_OPTION;
-            int dialogResult = JOptionPane.showConfirmDialog(this,"Data Belum Dipilih!","Info",dialogButton);
-            return;
-        }
-        DeleteDoc main = new DeleteDoc(this.frame.user_name);
-        main.httpConn(this.t_cust_acc_dtl_trans_id);
-        this.setDataTable();
+        int dialogButton = JOptionPane.YES_NO_OPTION;
+        int dialogResult = JOptionPane.showConfirmDialog(this,"Apakah Anda Yakin Ingin Menghapus data tersebut?","Info",dialogButton);
+        
+        if(dialogResult == 0) { // if yes
+            //do hapus
+            if(this.t_cust_acc_dtl_trans_id == 0){
+                int warningButton = JOptionPane.OK_OPTION;
+                int GagalResult = JOptionPane.showConfirmDialog(this,"Data Belum Dipilih","Info",warningButton);
+                return;
+            }
+            daoCustAccTrans dao = cust_acc_trans_pagination.getDao();
+            dao.t_cust_acc_dtl_trans_id = this.t_cust_acc_dtl_trans_id;
+            dao.delete(this.t_cust_acc_dtl_trans_id);
+            cust_acc_trans_pagination.total_data = dao.getCount();
+            setDataTable();
+            this.t_cust_acc_dtl_trans_id=0;
+        }else {
+            //do nothing
+        };
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -487,7 +501,9 @@ public final class ViewCustAccTrans extends javax.swing.JInternalFrame {
             }
         });
     }//GEN-LAST:event_jButton4ActionPerformed
-
+    public daoCustAccTrans getDao(){
+        return this.cust_acc_trans_pagination.getDao();
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable CustLegalTable;
     private javax.swing.JButton back_btn;

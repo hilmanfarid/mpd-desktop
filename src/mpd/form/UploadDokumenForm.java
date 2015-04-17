@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javaapplication2.DBConnection;
@@ -21,6 +22,7 @@ import javaapplication2.UploadWindow;
 import javaapplication2.ViewUploadDokumen;
 import mpd.lib.UlploadDoc;
 import mpd.model.Item;
+import virtualkeyboard.gui.DialogVirtualKeyboardReal;
 
 /**
  *
@@ -105,6 +107,16 @@ public class UploadDokumenForm extends javax.swing.JDialog {
         jLabel3.setText("Deskripsi");
 
         legal_doc_desc.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        legal_doc_desc.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                legal_doc_descMouseClicked(evt);
+            }
+        });
+        legal_doc_desc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                legal_doc_descActionPerformed(evt);
+            }
+        });
 
         jButton2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton2.setText("Save");
@@ -256,6 +268,24 @@ public class UploadDokumenForm extends javax.swing.JDialog {
     private void file_name_fieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_file_name_fieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_file_name_fieldActionPerformed
+
+    private void legal_doc_descActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_legal_doc_descActionPerformed
+        // TODO add your handling code here:
+        DialogVirtualKeyboardReal dlg;
+        dlg = new DialogVirtualKeyboardReal(this.frame, true, legal_doc_desc);
+        dlg.setPoitToUp(false);
+        dlg.setShiftBs(false);
+        dlg.setLocaleL(Locale.ENGLISH);
+    }//GEN-LAST:event_legal_doc_descActionPerformed
+
+    private void legal_doc_descMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_legal_doc_descMouseClicked
+        // TODO add your handling code here:
+        DialogVirtualKeyboardReal dlg;
+        dlg = new DialogVirtualKeyboardReal(this.frame, true, legal_doc_desc);
+        dlg.setPoitToUp(false);
+        dlg.setShiftBs(false);
+        dlg.setLocaleL(Locale.ENGLISH);
+    }//GEN-LAST:event_legal_doc_descMouseClicked
 
     /**
      * @param args the command line arguments
